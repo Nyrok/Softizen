@@ -5,11 +5,11 @@ public class Personne {
     private String nom;
     private String prenom;
     private String dateNaissance;
-    private Sexe sexe;
+    private String sexe;
     private EtatCivil etatCivil;
     private Personne conjoint;
 
-    public Personne(String nom, String prenom, String dateNaissance, Sexe sexe) {
+    public Personne(String nom, String prenom, String dateNaissance, String sexe) {
         this.id = UUID.randomUUID().toString();
         this.nom = nom;
         this.prenom = prenom;
