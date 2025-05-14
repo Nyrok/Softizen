@@ -1,26 +1,18 @@
-import java.util.UUID;
-
 public class Personne {
-    private String id;
-    private String nom;
-    private String prenom;
-    private String dateNaissance;
-    private String sexe;
+    private final String nom;
+    private final String prenom;
+    private final String dateNaissance;
+    private final String sexe;
     private EtatCivil etatCivil;
     private Personne conjoint;
 
     public Personne(String nom, String prenom, String dateNaissance, String sexe) {
-        this.id = UUID.randomUUID().toString();
         this.nom = nom;
         this.prenom = prenom;
         this.dateNaissance = dateNaissance;
         this.sexe = sexe;
         this.etatCivil = EtatCivil.CELIBATAIRE;
         this.conjoint = null;
-    }
-
-    public String getId() {
-        return id;
     }
 
     public String getNomPrenom() {
@@ -48,7 +40,7 @@ public class Personne {
     @Override
 
     public String toString() {
-        return "ID: " + id + " | " + nom + " " + prenom + " | Né(e) le: " + dateNaissance +
+        return nom + " " + prenom + " | Né(e) le: " + dateNaissance +
                 " | Sexe: " + sexe + " | État civil: " + etatCivil +
                 (conjoint != null ? " | Conjoint: " + conjoint.getNomPrenom() : "");
     }

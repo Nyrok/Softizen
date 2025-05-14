@@ -1,17 +1,21 @@
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class BaseDonnees {
-    private static Map<String, Personne> personnes = new HashMap<>();
+    public AtomicInteger lastId;
+    private final Map<AtomicInteger, Personne> personnes = new LinkedHashMap<>();
 
-    public static void ajouterPersonne(Personne p) {
-        personnes.put(p.getId(), p);
+    public void ajouterPersonne(Personne p) {
+        AtomicInteger id = new AtomicInteger(lastId.incrementAndGet());
+        personnes.put(id, p);
     }
 
-    public static Personne getPersonne(String id) {
-        return personnes.get(id);
+    public Personne getPersonne(int id) {
+        AtomicInteger idAtomicInteger = new AtomicInteger(id);
+        return personnes.get(idAtomicInteger);
     }
-    public static Collection<Personne> listerPersonnes()
-    {
+
+    public Collection<Personne> listerPersonnes() {
         return personnes.values();
     }
 }

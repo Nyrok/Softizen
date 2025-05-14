@@ -1,14 +1,20 @@
 public class GestionCitoyens {
-    public static void mariage(String id1, String id2){
-        Personne p1 = BaseDonnees.getPersonne(id1);
-        Personne p2 = BaseDonnees.getPersonne(id2);
+    BaseDonnees baseDonnees;
 
-        if (p1 == null || p2 == null){
+    public GestionCitoyens() {
+        baseDonnees = new BaseDonnees();
+    }
+
+    public void mariage(int id1, int id2) {
+        Personne p1 = baseDonnees.getPersonne(id1);
+        Personne p2 = baseDonnees.getPersonne(id2);
+
+        if (p1 == null || p2 == null) {
             System.out.println("Une des 2 personne n'existe pas !");
             return;
         }
 
-        if (p1.getEtatCivil() == EtatCivil.MARIE || p2.getEtatCivil() == EtatCivil.MARIE ){
+        if (p1.getEtatCivil() == EtatCivil.MARIE || p2.getEtatCivil() == EtatCivil.MARIE) {
             System.out.println("Erreur : l'une des personnes est deja marié !");
             return;
         }
@@ -17,13 +23,13 @@ public class GestionCitoyens {
         System.out.println("Mariage réussi !");
     }
 
-    public static void divorce(String id) {
-        Personne p = BaseDonnees.getPersonne(id);
-        if (p == null){
+    public void divorce(int id) {
+        Personne p = baseDonnees.getPersonne(id);
+        if (p == null) {
             System.out.println("Personne introuvable");
             return;
         }
-        if (p.getEtatCivil() != EtatCivil.MARIE || p.getConjoint() == null){
+        if (p.getEtatCivil() != EtatCivil.MARIE || p.getConjoint() == null) {
             System.out.println("Erreur : La personne n'est pas mariée");
             return;
         }
@@ -34,27 +40,27 @@ public class GestionCitoyens {
         System.out.println("Divorcer réussi !");
     }
 
-    public static void afficherEtat(String id){
-        Personne p = BaseDonnees.getPersonne(id);
-        if (p == null){
+    public void afficherEtat(int id) {
+        Personne p = baseDonnees.getPersonne(id);
+        if (p == null) {
             System.out.println("Personne introuvable");
             return;
         }
         System.out.println(p);
     }
 
-    public static void afficher(){
-        for (Personne p : BaseDonnees.listerPersonnes()){
+    public void afficher() {
+        for (Personne p : baseDonnees.listerPersonnes()) {
             System.out.println(p);
             System.out.println("--------------------------------");
         }
     }
 
-    public static void naissance(String idParent1, String idParent2){
-        Personne parent1 = BaseDonnees.getPersonne(idParent1);
-        Personne parent2 = BaseDonnees.getPersonne(idParent2);
+    public void naissance(int idParent1, int idParent2) {
+        Personne parent1 = baseDonnees.getPersonne(idParent1);
+        Personne parent2 = baseDonnees.getPersonne(idParent2);
 
-        if (parent1 == null && parent2 == null){
+        if (parent1 == null && parent2 == null) {
             System.out.println("Une personne n'existe pas !");
             return;
         }
@@ -65,8 +71,8 @@ public class GestionCitoyens {
         String sexe = Utilitaire.lire("Sexe (M/F): ");
 
         Personne p = new Personne(nom, prenom, dateNaissance, sexe);
-        BaseDonnees.ajouterPersonne(p);
-        System.out.println("Personne ajoutée avec l'ID: "+ p.getId());
+        baseDonnees.ajouterPersonne(p);
+        System.out.println("Personne ajoutée avec l'ID: " + baseDonnees.lastId);
     }
 
 
