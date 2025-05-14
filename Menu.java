@@ -26,7 +26,8 @@ public class Menu {
         this.buttonsMap.put("quitterProgramme", "Quitter le programme");
     }
 
-    public void afficher() {
+    public void menuPrincipal() {
+        this.reset();
         int buttonsMapSize = buttonsMap.size();
         JButton[] buttons = new JButton[buttonsMapSize];
         JPanel panel = new JPanel();
@@ -49,39 +50,70 @@ public class Menu {
         this.frame.pack();
     }
 
-    private static void mariage() {
-        System.out.println("Ici on va déclarer un mariage");
+    private void reset() {
+        this.frame.getContentPane().removeAll();
+        this.frame.repaint();
+        this.frame.revalidate();
     }
 
-    private static void divorce() {
+    private void mariage() {
+        this.reset();
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(3, 1));
+        JLabel title = new JLabel("Sélectionner les personnes à marier");
+        title.setHorizontalAlignment(JLabel.CENTER);
+        panel.add(title);
+        String[] options = {"Hamza Konte (1)", "Yassine Bakadir (2)", "Karine Bledarde (3)"};
+        JLabel[] labels = new JLabel[2];
+        JPanel subPanel = new JPanel();
+        subPanel.setLayout(new GridLayout(2, 2));
+        for (int i = 0; i < labels.length; i++) {
+            labels[i] = new JLabel("ID Personne " + (i + 1) + " :");
+            subPanel.add(labels[i]);
+            JComboBox<String> comboBox = new JComboBox<>(options);
+            comboBox.addActionListener(_ -> {
+                String selected = (String) comboBox.getSelectedItem();
+                JOptionPane.showMessageDialog(frame, "Vous avez sélectionné : " + selected);
+            });
+            subPanel.add(comboBox);
+        }
+        panel.add(subPanel);
+        JButton button = new JButton("Confirmer");
+        button.setSize(this.frame.getWidth(), 20);
+        panel.add(button);
+        this.frame.add(panel);
+        this.frame.pack();
+    }
+
+    private void divorce() {
         System.out.println("Ici on va déclarer un divorce");
     }
 
-    private static void naissance() {
+    private void naissance() {
         System.out.println("Ici on va déclarer une naissance");
     }
 
-    private static void etatPersonne() {
+    private void etatPersonne() {
         System.out.println("Ici on va afficher l'état d'une personne");
     }
 
-    private static void affichageListePersonnes() {
+    private void affichageListePersonnes() {
         System.out.println("Ici on va afficher les personnes");
     }
 
-    private static void saisiePersonnes() {
+    private void saisiePersonnes() {
         System.out.println("Ici on va saisir les personnes");
     }
 
-    private static void quitterProgramme() {
-        System.out.println("Au revoir");
+    private void quitterProgramme() {
+        System.exit(0);
     }
 
     private void buttonCallback(ActionEvent actionEvent) {
         String methodName = actionEvent.getActionCommand();
         try {
             Method method = this.getClass().getDeclaredMethod(methodName);
-            method.invoke(null);
+            method.invoke(this);
         } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException exception) {
             System.err.println(exception.getMessage());
         }
