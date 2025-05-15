@@ -7,39 +7,41 @@ public class GestionCitoyens {
         baseDonnees = db;
     }
 
-    public void mariage(JFrame frame, int id1, int id2) {
+    public boolean mariage(JFrame frame, int id1, int id2) {
         Personne p1 = baseDonnees.getPersonne(id1);
         Personne p2 = baseDonnees.getPersonne(id2);
 
         if (p1 == null || p2 == null) {
             JOptionPane.showMessageDialog(frame, "Erreur : L'une des 2 personne n'existe pas !");
-            return;
+            return false;
         }
 
         if (p1.getEtatCivil() == EtatCivil.MARIE || p2.getEtatCivil() == EtatCivil.MARIE) {
             JOptionPane.showMessageDialog(frame, "Erreur : L'une des personnes est deja marié !");
-            return;
+            return false;
         }
         p1.marier(p2);
         p2.marier(p1);
         JOptionPane.showMessageDialog(frame, "Mariage réussi !");
+        return true;
     }
 
-    public void divorce(JFrame frame, int id) {
+    public boolean divorce(JFrame frame, int id) {
         Personne p = baseDonnees.getPersonne(id);
         if (p == null) {
             JOptionPane.showMessageDialog(frame, "Erreur : Personne introuvable");
-            return;
+            return false;
         }
         if (p.getEtatCivil() != EtatCivil.MARIE || p.getConjoint() == null) {
             JOptionPane.showMessageDialog(frame, "Erreur : La personne n'est pas mariée");
-            return;
+            return false;
         }
 
         Personne conjoint = p.getConjoint();
         p.divorcer();
         conjoint.divorcer();
-        System.out.println("Divorce réussi !");
+        JOptionPane.showMessageDialog(frame, "Divorce réussi !");
+        return true;
     }
 
     public void afficherEtat(int id) {
@@ -58,23 +60,33 @@ public class GestionCitoyens {
         }
     }
 
-    public void naissance(int idParent1, int idParent2) {
+    public boolean naissance(JFrame frame, int idParent1, int idParent2, JTextField[] textFields) {
         Personne parent1 = baseDonnees.getPersonne(idParent1);
         Personne parent2 = baseDonnees.getPersonne(idParent2);
 
         if (parent1 == null && parent2 == null) {
-            System.out.println("Une personne n'existe pas !");
-            return;
+            JOptionPane.showMessageDialog(frame, "Erreur: Une personne n'existe pas !");
+            return false;
         }
 
-        String nom = Utilitaire.lire("Nom de l'enfant: ");
-        String prenom = Utilitaire.lire("Prenom de l'enfant: ");
-        String dateNaissance = Utilitaire.lire("Date de naissance (JJ/MM/AAAA): ");
-        String sexe = Utilitaire.lire("Sexe (M/F): ");
+        Personne[] parents = new Personne[2];
+        parents[0] = parent1;
+        parents[1] = parent2;
 
-        Personne p = new Personne(nom, prenom, dateNaissance, sexe);
+        String nom = textFields[0].getText();
+        String prenom = textFields[1].getText();
+        String dateNaissance = textFields[2].getText();
+        String sexe = textFields[3].getText();
+
+        if (nom.isEmpty() || prenom.isEmpty() || dateNaissance.isEmpty() || sexe.isEmpty()) {
+            JOptionPane.showMessageDialog(frame, "Veuillez remplir tous les champs");
+            return false;
+        }
+
+        Personne p = new Personne(parents, nom, prenom, dateNaissance, sexe);
         baseDonnees.ajouterPersonne(p);
-        System.out.println("Personne ajoutée avec l'ID: " + baseDonnees.lastId);
+        JOptionPane.showMessageDialog(frame, "Nouvelle naissance ajoutée avec l'ID: " + baseDonnees.lastId);
+        return true;
     }
 
 

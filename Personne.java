@@ -1,4 +1,5 @@
 public class Personne {
+    private final Personne[] parents;
     private final String nom;
     private final String prenom;
     private final String dateNaissance;
@@ -6,13 +7,18 @@ public class Personne {
     private EtatCivil etatCivil;
     private Personne conjoint;
 
-    public Personne(String nom, String prenom, String dateNaissance, String sexe) {
+    public Personne(Personne[] parents, String nom, String prenom, String dateNaissance, String sexe) {
+        this.parents = parents;
         this.nom = nom;
         this.prenom = prenom;
         this.dateNaissance = dateNaissance;
         this.sexe = sexe;
         this.etatCivil = EtatCivil.CELIBATAIRE;
         this.conjoint = null;
+    }
+
+    public Personne[] getParents() {
+        return parents;
     }
 
     public String getNomPrenom() {

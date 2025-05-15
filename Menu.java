@@ -2,11 +2,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import javax.swing.*;
-import javax.swing.border.Border;
 
 public class Menu {
     JFrame frame;
@@ -86,7 +84,8 @@ public class Menu {
         confirmButton.addActionListener(_ -> {
             int idP1 = comboBoxes[0].getSelectedIndex();
             int idP2 = comboBoxes[1].getSelectedIndex();
-            this.gestionCitoyens.mariage(this.frame, idP1, idP2);
+            if (this.gestionCitoyens.mariage(this.frame, idP1, idP2))
+                this.menuPrincipal();
         });
         buttonsPanel.add(confirmButton);
         buttonsPanel.add(this.backButton());
@@ -97,24 +96,20 @@ public class Menu {
 
     private void divorce() {
         this.reset();
-        this.frame.setPreferredSize(new Dimension(275, 200));
+        this.frame.setPreferredSize(new Dimension(275, 150));
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createEmptyBorder(10, 20, 0, 20));
         panel.setLayout(new GridLayout(3, 1));
         JLabel title = Utilitaire.createTitle("Sélectionner la personne à divorcer");
         panel.add(title);
-        JPanel subPanel = new JPanel();
-        JLabel label = new JLabel("Personne :");
-        subPanel.add(label);
-        subPanel.setLayout(new GridLayout(1, 2));
         JComboBox<String> comboBox = Utilitaire.createComboBox(this.baseDonnees);
-        subPanel.add(comboBox);
-        panel.add(subPanel);
+        panel.add(comboBox);
         JPanel buttonsPanel = new JPanel();
         JButton confirmButton = new JButton("Confirmer");
         confirmButton.addActionListener(_ -> {
             int id = comboBox.getSelectedIndex();
-            this.gestionCitoyens.divorce(this.frame, id);
+            if (this.gestionCitoyens.divorce(this.frame, id))
+                this.menuPrincipal();
         });
         buttonsPanel.add(confirmButton);
         buttonsPanel.add(this.backButton());
@@ -124,7 +119,58 @@ public class Menu {
     }
 
     private void naissance() {
-        System.out.println("Ici on va déclarer une naissance");
+        this.reset();
+        this.frame.setPreferredSize(new Dimension(275, 300));
+        JPanel panel = new JPanel();
+        panel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+        JLabel title = Utilitaire.createTitle("Déclarer une naissance");
+        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+        title.setBorder(BorderFactory.createEmptyBorder(10, 0, 20, 0));
+        panel.add(title);
+
+        JPanel parentsPanel = new JPanel();
+        parentsPanel.setLayout(new GridLayout(6, 2));
+        JLabel[] parentLabels = new JLabel[2];
+        JComboBox<String>[] parentBoxes = new JComboBox[2];
+
+        parentLabels[0] = new JLabel("Parent 1 :");
+        parentLabels[1] = new JLabel("Parent 2 :");
+
+        for (int i = 0; i < 2; i++) {
+            parentsPanel.add(parentLabels[i]);
+            parentBoxes[i] = Utilitaire.createComboBox(this.baseDonnees);
+            parentsPanel.add(parentBoxes[i]);
+        }
+        panel.add(parentsPanel);
+
+        String[] labels = {"Nom :", "Prénom :", "Date (JJ/MM/AAAA) :", "Sexe (M/F) :"};
+        JTextField[] textFields = new JTextField[4];
+
+        for (int i = 0; i < 4; i++) {
+            parentsPanel.add(new JLabel(labels[i]));
+            textFields[i] = new JTextField();
+            parentsPanel.add(textFields[i]);
+        }
+        panel.add(parentsPanel);
+
+        JPanel buttonsPanel = new JPanel();
+        JButton confirmButton = new JButton("Confirmer");
+        confirmButton.addActionListener(_ -> {
+            int idP1 = parentBoxes[0].getSelectedIndex();
+            int idP2 = parentBoxes[1].getSelectedIndex();
+
+            if (this.gestionCitoyens.naissance(this.frame, idP1, idP2, textFields))
+                this.menuPrincipal();
+        });
+
+        buttonsPanel.add(confirmButton);
+        buttonsPanel.add(this.backButton());
+        panel.add(buttonsPanel);
+
+        this.frame.add(panel);
+        this.frame.pack();
     }
 
     private void etatPersonne() {
