@@ -2,18 +2,23 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import javax.swing.*;
+import javax.swing.border.Border;
 
 public class Menu {
     JFrame frame;
     LinkedHashMap<String, String> buttonsMap;
+    BaseDonnees baseDonnees;
+    GestionCitoyens gestionCitoyens;
 
-    public Menu() {
+    public Menu(BaseDonnees db, GestionCitoyens gestion) {
+        this.baseDonnees = db;
+        this.gestionCitoyens = gestion;
         this.frame = new JFrame();
         this.frame.setTitle("Softizen");
-        this.frame.setPreferredSize(new Dimension(300, 300));
         this.frame.setVisible(true);
         this.frame.setResizable(false);
         this.buttonsMap = new LinkedHashMap<>();
@@ -28,6 +33,7 @@ public class Menu {
 
     public void menuPrincipal() {
         this.reset();
+        this.frame.setPreferredSize(new Dimension(300, 300));
         int buttonsMapSize = buttonsMap.size();
         JButton[] buttons = new JButton[buttonsMapSize];
         JPanel panel = new JPanel();
@@ -58,35 +64,63 @@ public class Menu {
 
     private void mariage() {
         this.reset();
+        this.frame.setPreferredSize(new Dimension(275, 200));
         JPanel panel = new JPanel();
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 20, 0, 20));
         panel.setLayout(new GridLayout(3, 1));
-        JLabel title = new JLabel("Sélectionner les personnes à marier");
-        title.setHorizontalAlignment(JLabel.CENTER);
+        JLabel title = Utilitaire.createTitle("Sélectionner les personnes à marier");
         panel.add(title);
-        String[] options = {"Hamza Konte (1)", "Yassine Bakadir (2)", "Karine Bledarde (3)"};
         JLabel[] labels = new JLabel[2];
         JPanel subPanel = new JPanel();
         subPanel.setLayout(new GridLayout(2, 2));
+        JComboBox<String>[] comboBoxes = new JComboBox[2];
         for (int i = 0; i < labels.length; i++) {
-            labels[i] = new JLabel("ID Personne " + (i + 1) + " :");
+            labels[i] = new JLabel("Personne " + (i + 1) + " :");
             subPanel.add(labels[i]);
-            JComboBox<String> comboBox = new JComboBox<>(options);
-            comboBox.addActionListener(_ -> {
-                String selected = (String) comboBox.getSelectedItem();
-                JOptionPane.showMessageDialog(frame, "Vous avez sélectionné : " + selected);
-            });
-            subPanel.add(comboBox);
+            comboBoxes[i] = Utilitaire.createComboBox(this.baseDonnees);
+            subPanel.add(comboBoxes[i]);
         }
         panel.add(subPanel);
-        JButton button = new JButton("Confirmer");
-        button.setSize(this.frame.getWidth(), 20);
-        panel.add(button);
+        JPanel buttonsPanel = new JPanel();
+        JButton confirmButton = new JButton("Confirmer");
+        confirmButton.addActionListener(_ -> {
+            int idP1 = comboBoxes[0].getSelectedIndex();
+            int idP2 = comboBoxes[1].getSelectedIndex();
+            this.gestionCitoyens.mariage(this.frame, idP1, idP2);
+        });
+        buttonsPanel.add(confirmButton);
+        buttonsPanel.add(this.backButton());
+        panel.add(buttonsPanel);
         this.frame.add(panel);
         this.frame.pack();
     }
 
     private void divorce() {
-        System.out.println("Ici on va déclarer un divorce");
+        this.reset();
+        this.frame.setPreferredSize(new Dimension(275, 200));
+        JPanel panel = new JPanel();
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 20, 0, 20));
+        panel.setLayout(new GridLayout(3, 1));
+        JLabel title = Utilitaire.createTitle("Sélectionner la personne à divorcer");
+        panel.add(title);
+        JPanel subPanel = new JPanel();
+        JLabel label = new JLabel("Personne :");
+        subPanel.add(label);
+        subPanel.setLayout(new GridLayout(1, 2));
+        JComboBox<String> comboBox = Utilitaire.createComboBox(this.baseDonnees);
+        subPanel.add(comboBox);
+        panel.add(subPanel);
+        JPanel buttonsPanel = new JPanel();
+        JButton confirmButton = new JButton("Confirmer");
+        confirmButton.addActionListener(_ -> {
+            int id = comboBox.getSelectedIndex();
+            this.gestionCitoyens.divorce(this.frame, id);
+        });
+        buttonsPanel.add(confirmButton);
+        buttonsPanel.add(this.backButton());
+        panel.add(buttonsPanel);
+        this.frame.add(panel);
+        this.frame.pack();
     }
 
     private void naissance() {
@@ -117,5 +151,11 @@ public class Menu {
         } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException exception) {
             System.err.println(exception.getMessage());
         }
+    }
+
+    private JButton backButton() {
+        JButton button = new JButton("Retour");
+        button.addActionListener(_ -> this.menuPrincipal());
+        return button;
     }
 }

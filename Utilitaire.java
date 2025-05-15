@@ -1,6 +1,8 @@
 import java.awt.event.*;
 import java.awt.*;
 import javax.swing.*;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.Scanner;
 
 public class Utilitaire {
@@ -22,5 +24,25 @@ public class Utilitaire {
         JButton confirm = new JButton("Entrer");
         dialog.getContentPane().add(confirm);
         return dialog;
+    }
+
+    public static JLabel createTitle(String title) {
+        JLabel label = new JLabel("<html><div style='text-align: center;'>" + title + "</div></html>");
+        label.setHorizontalAlignment(JLabel.CENTER);
+        label.setVerticalAlignment(JLabel.TOP);
+        return label;
+    }
+
+    public static JComboBox<String> createComboBox(BaseDonnees baseDonnees) {
+        Collection<Personne> listPersonnes = baseDonnees.listerPersonnes();
+        Iterator<Personne> listPersonnesI = listPersonnes.iterator();
+        String[] options = new String[listPersonnes.size() + 1];
+        options[0] = "--";
+        int i = 1;
+        while (listPersonnesI.hasNext()) {
+            Personne personne = listPersonnesI.next();
+            options[i++] = personne.getNomPrenom() + " (" + i + ")";
+        }
+        return new JComboBox<String>(options);
     }
 }

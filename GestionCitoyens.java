@@ -1,43 +1,45 @@
+import javax.swing.*;
+
 public class GestionCitoyens {
     BaseDonnees baseDonnees;
 
-    public GestionCitoyens() {
-        baseDonnees = new BaseDonnees();
+    public GestionCitoyens(BaseDonnees db) {
+        baseDonnees = db;
     }
 
-    public void mariage(int id1, int id2) {
+    public void mariage(JFrame frame, int id1, int id2) {
         Personne p1 = baseDonnees.getPersonne(id1);
         Personne p2 = baseDonnees.getPersonne(id2);
 
         if (p1 == null || p2 == null) {
-            System.out.println("Une des 2 personne n'existe pas !");
+            JOptionPane.showMessageDialog(frame, "Erreur : L'une des 2 personne n'existe pas !");
             return;
         }
 
         if (p1.getEtatCivil() == EtatCivil.MARIE || p2.getEtatCivil() == EtatCivil.MARIE) {
-            System.out.println("Erreur : l'une des personnes est deja marié !");
+            JOptionPane.showMessageDialog(frame, "Erreur : L'une des personnes est deja marié !");
             return;
         }
         p1.marier(p2);
         p2.marier(p1);
-        System.out.println("Mariage réussi !");
+        JOptionPane.showMessageDialog(frame, "Mariage réussi !");
     }
 
-    public void divorce(int id) {
+    public void divorce(JFrame frame, int id) {
         Personne p = baseDonnees.getPersonne(id);
         if (p == null) {
-            System.out.println("Personne introuvable");
+            JOptionPane.showMessageDialog(frame, "Erreur : Personne introuvable");
             return;
         }
         if (p.getEtatCivil() != EtatCivil.MARIE || p.getConjoint() == null) {
-            System.out.println("Erreur : La personne n'est pas mariée");
+            JOptionPane.showMessageDialog(frame, "Erreur : La personne n'est pas mariée");
             return;
         }
 
         Personne conjoint = p.getConjoint();
         p.divorcer();
         conjoint.divorcer();
-        System.out.println("Divorcer réussi !");
+        System.out.println("Divorce réussi !");
     }
 
     public void afficherEtat(int id) {
