@@ -25,7 +25,7 @@ public class Utilitaire {
     }
 
     public static JLabel createTitle(String title) {
-        JLabel label = new JLabel("<html><div style='text-align: center;'>" + title + "</div></html>");
+        JLabel label = new JLabel("<html><div style='text-align: center;font-weight: bold;'>" + title.toUpperCase() + "</div></html>");
         label.setHorizontalAlignment(JLabel.CENTER);
         label.setVerticalAlignment(JLabel.TOP);
         return label;

@@ -38,6 +38,7 @@ public class Interface {
 
     public static void main(String[] args) {
         Database database = new Database();
+        database.load();
         Mairie mairie = new Mairie(database);
         Interface menu = new Interface(database, mairie);
         menu.splashScreen();
@@ -78,7 +79,6 @@ public class Interface {
         int buttonsMapSize = buttonsMap.size();
         JButton[] buttons = new JButton[buttonsMapSize];
         JPanel panel = new JPanel();
-        //panel.setBackground(BACKGROUND_COLOR);
         panel.setLayout(new GridLayout(buttonsMapSize, 1));
         Iterator<String> keysIterator = this.buttonsMap.keySet().iterator();
         Iterator<String> valuesIterator = this.buttonsMap.values().iterator();
@@ -353,6 +353,7 @@ public class Interface {
     }
 
     private void quitterProgramme() {
+        this.database.save();
         System.exit(0);
     }
 

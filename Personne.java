@@ -23,6 +23,14 @@ public class Personne {
         return parents;
     }
 
+    public String getNom() {
+        return nom;
+    }
+
+    public String getPrenom() {
+        return prenom;
+    }
+
     public String getNomPrenom() {
         return nom + " " + prenom;
     }
@@ -39,6 +47,10 @@ public class Personne {
         return etatCivil;
     }
 
+    public void setEtatCivil(EtatCivil etatCivil) {
+        this.etatCivil = etatCivil;
+    }
+
     public Personne getConjoint() {
         return conjoint;
     }
@@ -53,14 +65,13 @@ public class Personne {
         this.conjoint = null;
     }
 
-    public void deces(){
+    public void deces() {
         this.etatCivil = EtatCivil.DECES;
     }
 
-    public void veuf(){
+    public void veuf() {
         this.etatCivil = EtatCivil.VEUF;
     }
-
 
 
     @Override
