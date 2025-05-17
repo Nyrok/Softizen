@@ -13,13 +13,14 @@ public class Menu {
     BaseDonnees baseDonnees;
     GestionCitoyens gestionCitoyens;
 
-    public Menu(BaseDonnees db, GestionCitoyens gestion) {
+    public Menu(BaseDonnees db, GestionCitoyens gc) {
         this.baseDonnees = db;
-        this.gestionCitoyens = gestion;
+        this.gestionCitoyens = gc;
         this.frame = new JFrame();
         this.frame.setTitle("Softizen");
         this.frame.setVisible(true);
         this.frame.setResizable(false);
+        this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.buttonsMap = new LinkedHashMap<>();
         this.buttonsMap.put("mariage", "Mariage");
         this.buttonsMap.put("divorce", "Divorce");
@@ -154,16 +155,15 @@ public class Menu {
             textFields[i] = new JTextField();
             parentsPanel.add(textFields[i]);
         }
-        String[] sexes = {"Homme", "Femme"};
         parentsPanel.add(new JLabel("Sexe :"));
-        JComboBox<String> sexeBox = new JComboBox<>(sexes);
+        JComboBox<Sexe> sexeBox = new JComboBox<>(Sexe.values());
         parentsPanel.add(sexeBox);
         panel.add(parentsPanel);
 
         JPanel buttonsPanel = new JPanel();
         JButton confirmButton = new JButton("Confirmer");
         confirmButton.addActionListener(actionEvent -> {
-            String sexe = Objects.requireNonNull(sexeBox.getSelectedItem()).toString();
+            Sexe sexe = (Sexe) Objects.requireNonNull(sexeBox.getSelectedItem());
             int idP1 = parentBoxes[0].getSelectedIndex();
             int idP2 = parentBoxes[1].getSelectedIndex();
 

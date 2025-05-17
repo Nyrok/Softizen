@@ -1,13 +1,15 @@
+import java.util.Date;
+
 public class Personne {
     private final Personne[] parents;
     private final String nom;
     private final String prenom;
-    private final String dateNaissance;
-    private final String sexe;
+    private final Date dateNaissance;
+    private final Sexe sexe;
     private EtatCivil etatCivil;
     private Personne conjoint;
 
-    public Personne(Personne[] parents, String nom, String prenom, String dateNaissance, String sexe) {
+    public Personne(Personne[] parents, String nom, String prenom, Date dateNaissance, Sexe sexe) {
         this.parents = parents;
         this.nom = nom;
         this.prenom = prenom;

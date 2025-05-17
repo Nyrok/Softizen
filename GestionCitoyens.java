@@ -1,4 +1,6 @@
 import javax.swing.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class GestionCitoyens {
     BaseDonnees baseDonnees;
@@ -60,7 +62,7 @@ public class GestionCitoyens {
         }
     }
 
-    public boolean naissance(JFrame frame, int idParent1, int idParent2, String sexe, JTextField[] textFields) {
+    public boolean naissance(JFrame frame, int idParent1, int idParent2, Sexe sexe, JTextField[] textFields) {
         Personne parent1 = baseDonnees.getPersonne(idParent1);
         Personne parent2 = baseDonnees.getPersonne(idParent2);
 
@@ -82,7 +84,15 @@ public class GestionCitoyens {
             return false;
         }
 
-        Personne p = new Personne(parents, nom, prenom, dateNaissance, sexe);
+        Personne p;
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            Date date = dateFormat.parse(dateNaissance);
+            p = new Personne(parents, nom, prenom, date, sexe);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(frame, "Format de date invalide. Utilisez JJ/MM/AAAA");
+            return false;
+        }
         baseDonnees.ajouterPersonne(p);
         JOptionPane.showMessageDialog(frame, "Nouvelle naissance ajoutée avec l'ID: " + baseDonnees.lastId);
         return true;
