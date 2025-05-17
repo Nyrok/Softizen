@@ -10,16 +10,22 @@ public class GestionCitoyens {
     }
 
     public boolean mariage(JFrame frame, int id1, int id2) {
+        System.out.println("id1: " + id1 + " id2: " + id2);
         Personne p1 = baseDonnees.getPersonne(id1);
         Personne p2 = baseDonnees.getPersonne(id2);
 
         if (p1 == null || p2 == null) {
-            JOptionPane.showMessageDialog(frame, "Erreur : L'une des 2 personne n'existe pas !");
+            Utilitaire.showError(frame, "L'une des 2 personnes n'existe pas !");
+            return false;
+        }
+
+        if (id1 == id2) {
+            Utilitaire.showError(frame, "Vous devez marier deux personnes différentes !");
             return false;
         }
 
         if (p1.getEtatCivil() == EtatCivil.MARIE || p2.getEtatCivil() == EtatCivil.MARIE) {
-            JOptionPane.showMessageDialog(frame, "Erreur : L'une des personnes est deja marié !");
+            Utilitaire.showError(frame, "L'une des personnes est déjà mariée !");
             return false;
         }
         p1.marier(p2);
@@ -31,11 +37,11 @@ public class GestionCitoyens {
     public boolean divorce(JFrame frame, int id) {
         Personne p = baseDonnees.getPersonne(id);
         if (p == null) {
-            JOptionPane.showMessageDialog(frame, "Erreur : Personne introuvable");
+            Utilitaire.showError(frame, "Personne introuvable");
             return false;
         }
         if (p.getEtatCivil() != EtatCivil.MARIE || p.getConjoint() == null) {
-            JOptionPane.showMessageDialog(frame, "Erreur : La personne n'est pas mariée");
+            Utilitaire.showError(frame, "La personne n'est pas mariée");
             return false;
         }
 
@@ -63,24 +69,34 @@ public class GestionCitoyens {
     }
 
     public boolean naissance(JFrame frame, int idParent1, int idParent2, Sexe sexe, JTextField[] textFields) {
-        Personne parent1 = baseDonnees.getPersonne(idParent1);
-        Personne parent2 = baseDonnees.getPersonne(idParent2);
-
-        if (parent1 == null && parent2 == null) {
-            JOptionPane.showMessageDialog(frame, "Erreur: Une personne n'existe pas !");
-            return false;
-        }
-
         Personne[] parents = new Personne[2];
-        parents[0] = parent1;
-        parents[1] = parent2;
+        if (idParent1 == -1 && idParent2 == -1) {
+            parents[0] = null;
+            parents[1] = null;
+        } else {
+            Personne parent1 = baseDonnees.getPersonne(idParent1);
+            Personne parent2 = baseDonnees.getPersonne(idParent2);
+
+            if (parent1 == null || parent2 == null) {
+                Utilitaire.showError(frame, "L'une des 2 personne n'existe pas");
+                return false;
+            }
+
+            if (idParent1 == idParent2) {
+                Utilitaire.showError(frame, "Vous devez déclarer deux parents différents");
+                return false;
+            }
+
+            parents[0] = parent1;
+            parents[1] = parent2;
+        }
 
         String nom = textFields[0].getText();
         String prenom = textFields[1].getText();
         String dateNaissance = textFields[2].getText();
 
         if (nom.isEmpty() || prenom.isEmpty() || dateNaissance.isEmpty()) {
-            JOptionPane.showMessageDialog(frame, "Veuillez remplir tous les champs");
+            Utilitaire.showError(frame, "Veuillez remplir tous les champs");
             return false;
         }
 
@@ -90,11 +106,11 @@ public class GestionCitoyens {
             Date date = dateFormat.parse(dateNaissance);
             p = new Personne(parents, nom, prenom, date, sexe);
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(frame, "Format de date invalide. Utilisez JJ/MM/AAAA");
+            Utilitaire.showError(frame, "Format de date invalide. Utilisez JJ/MM/AAAA");
             return false;
         }
         baseDonnees.ajouterPersonne(p);
-        JOptionPane.showMessageDialog(frame, "Nouvelle naissance ajoutée avec l'ID: " + baseDonnees.lastId);
+        JOptionPane.showMessageDialog(frame, "ID: " + baseDonnees.lastId, "Nouvelle naissance ajoutée", JOptionPane.INFORMATION_MESSAGE);
         return true;
     }
 

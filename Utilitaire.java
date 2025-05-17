@@ -41,8 +41,16 @@ public class Utilitaire {
         int i = 1;
         while (listPersonnesI.hasNext()) {
             Personne personne = listPersonnesI.next();
-            options[i++] = personne.getNomPrenom() + " (" + i + ")";
+            options[i] = personne.getNomPrenom() + " (" + i + ")";
+            i++;
         }
         return new JComboBox<String>(options);
+    }
+
+    public static void showError(JFrame frame, String message) {
+        JOptionPane.showMessageDialog(frame,
+                message,
+                "Erreur",
+                JOptionPane.ERROR_MESSAGE);
     }
 }

@@ -11,7 +11,7 @@ public class Personne {
 
     public Personne(Personne[] parents, String nom, String prenom, Date dateNaissance, Sexe sexe) {
         this.parents = parents;
-        this.nom = nom;
+        this.nom = nom.toUpperCase();
         this.prenom = prenom;
         this.dateNaissance = dateNaissance;
         this.sexe = sexe;
@@ -25,6 +25,14 @@ public class Personne {
 
     public String getNomPrenom() {
         return nom + " " + prenom;
+    }
+
+    public Sexe getSexe() {
+        return sexe;
+    }
+
+    public Date getDateNaissance() {
+        return dateNaissance;
     }
 
     public EtatCivil getEtatCivil() {

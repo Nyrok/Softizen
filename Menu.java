@@ -2,6 +2,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Collection;
+import java.text.SimpleDateFormat;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Objects;
@@ -180,15 +182,116 @@ public class Menu {
     }
 
     private void etatPersonne() {
-        System.out.println("Ici on va afficher l'état d'une personne");
+        this.reset();
+        this.frame.setPreferredSize(new Dimension(275, 150));
+        JPanel panel = new JPanel();
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 20, 0, 20));
+        panel.setLayout(new GridLayout(3, 1));
+
+        JLabel title = Utilitaire.createTitle("Sélectionner une personne");
+        panel.add(title);
+
+        JComboBox<String> comboBox = Utilitaire.createComboBox(this.baseDonnees);
+        panel.add(comboBox);
+
+        JPanel buttonsPanel = new JPanel();
+        JButton confirmButton = new JButton("Afficher");
+        confirmButton.addActionListener(actionEvent -> {
+            int id = comboBox.getSelectedIndex();
+            Personne p = this.baseDonnees.getPersonne(id);
+            if (p != null) {
+                JOptionPane.showMessageDialog(this.frame, p.toString(),
+                        "État de la personne", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                Utilitaire.showError(this.frame, "Cette personne n'existe pas");
+            }
+        });
+        buttonsPanel.add(confirmButton);
+        buttonsPanel.add(this.backButton());
+        panel.add(buttonsPanel);
+
+        this.frame.add(panel);
+        this.frame.pack();
     }
 
     private void affichageListePersonnes() {
-        System.out.println("Ici on va afficher les personnes");
+        this.reset();
+        this.frame.setPreferredSize(new Dimension(700, 400));
+
+        String[] columnNames = {"Nom", "Prénom", "Sexe", "Date de naissance", "Conjoint", "Parent 1", "Parent 2"};
+        Collection<Personne> personnes = baseDonnees.listerPersonnes();
+        Object[][] data = new Object[personnes.size()][7];
+
+        int i = 0;
+        for (Personne p : personnes) {
+            data[i][0] = p.getNomPrenom().split(" ")[0];
+            data[i][1] = p.getNomPrenom().split(" ")[1];
+            data[i][2] = p.getSexe();
+            data[i][3] = new SimpleDateFormat("dd/MM/yyyy").format(p.getDateNaissance());
+            data[i][4] = p.getConjoint() != null ? p.getConjoint().getNomPrenom() : "";
+            data[i][5] = p.getParents() != null && p.getParents()[0] != null ? p.getParents()[0].getNomPrenom() : "";
+            data[i][6] = p.getParents() != null && p.getParents()[1] != null ? p.getParents()[1].getNomPrenom() : "";
+            i++;
+        }
+
+        JTable table = new JTable(data, columnNames);
+        table.setFillsViewportHeight(true);
+
+        JScrollPane scrollPane = new JScrollPane(table);
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.add(scrollPane, BorderLayout.CENTER);
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(this.backButton());
+        panel.add(buttonPanel, BorderLayout.SOUTH);
+
+        this.frame.add(panel);
+        this.frame.pack();
     }
 
     private void saisiePersonnes() {
-        System.out.println("Ici on va saisir les personnes");
+        this.reset();
+        this.frame.setPreferredSize(new Dimension(275, 250));
+        JPanel panel = new JPanel();
+        panel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+        JLabel title = Utilitaire.createTitle("Saisir une nouvelle personne");
+        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+        title.setBorder(BorderFactory.createEmptyBorder(10, 0, 20, 0));
+        panel.add(title);
+
+        JPanel inputPanel = new JPanel();
+        inputPanel.setLayout(new GridLayout(4, 2));
+
+        String[] labels = {"Nom :", "Prénom :", "Date (JJ/MM/AAAA) :"};
+        JTextField[] textFields = new JTextField[3];
+
+        for (int i = 0; i < 3; i++) {
+            inputPanel.add(new JLabel(labels[i]));
+            textFields[i] = new JTextField();
+            inputPanel.add(textFields[i]);
+        }
+
+        inputPanel.add(new JLabel("Sexe :"));
+        JComboBox<Sexe> sexeBox = new JComboBox<>(Sexe.values());
+        inputPanel.add(sexeBox);
+        panel.add(inputPanel);
+
+        JPanel buttonsPanel = new JPanel();
+        JButton confirmButton = new JButton("Confirmer");
+        confirmButton.addActionListener(actionEvent -> {
+            Sexe sexe = (Sexe) Objects.requireNonNull(sexeBox.getSelectedItem());
+            if (this.gestionCitoyens.naissance(this.frame, -1, -1, sexe, textFields))
+                this.menuPrincipal();
+        });
+
+        buttonsPanel.add(confirmButton);
+        buttonsPanel.add(this.backButton());
+        panel.add(buttonsPanel);
+
+        this.frame.add(panel);
+        this.frame.pack();
     }
 
     private void quitterProgramme() {
