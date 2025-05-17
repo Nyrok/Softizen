@@ -234,7 +234,12 @@ public class Menu {
             i++;
         }
 
-        JTable table = new JTable(data, columnNames);
+        JTable table = new JTable(data, columnNames) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         table.setFillsViewportHeight(true);
 
         JScrollPane scrollPane = new JScrollPane(table);
