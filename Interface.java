@@ -63,6 +63,7 @@ public class Interface {
             System.err.println(e.getMessage());
         }
         window.setVisible(false);
+        window.dispose();
         this.menuPrincipal(true);
     }
 
@@ -77,7 +78,7 @@ public class Interface {
         int buttonsMapSize = buttonsMap.size();
         JButton[] buttons = new JButton[buttonsMapSize];
         JPanel panel = new JPanel();
-        panel.setBackground(BACKGROUND_COLOR);
+        //panel.setBackground(BACKGROUND_COLOR);
         panel.setLayout(new GridLayout(buttonsMapSize, 1));
         Iterator<String> keysIterator = this.buttonsMap.keySet().iterator();
         Iterator<String> valuesIterator = this.buttonsMap.values().iterator();
@@ -90,6 +91,8 @@ public class Interface {
             buttons[i].setSize(this.frame.getWidth(), 20);
             buttons[i].setActionCommand(key);
             buttons[i].addActionListener(this::buttonCallback);
+            if (!valuesIterator.hasNext())
+                buttons[i].setForeground(Color.RED);
             panel.add(buttons[i]);
             i++;
         }
@@ -130,14 +133,15 @@ public class Interface {
         panel.add(subPanel);
         JPanel buttonsPanel = new JPanel();
         JButton confirmButton = new JButton("Confirmer");
+        confirmButton.setForeground(new Color(46, 142, 95));
         confirmButton.addActionListener(actionEvent -> {
             int idP1 = comboBoxes[0].getSelectedIndex();
             int idP2 = comboBoxes[1].getSelectedIndex();
             if (this.mairie.mariage(this.frame, idP1, idP2))
                 this.menuPrincipal(false);
         });
-        buttonsPanel.add(confirmButton);
         buttonsPanel.add(this.backButton());
+        buttonsPanel.add(confirmButton);
         panel.add(buttonsPanel);
         this.frame.add(panel);
         this.frame.pack();
@@ -155,13 +159,14 @@ public class Interface {
         panel.add(comboBox);
         JPanel buttonsPanel = new JPanel();
         JButton confirmButton = new JButton("Confirmer");
+        confirmButton.setForeground(new Color(46, 142, 95));
         confirmButton.addActionListener(actionEvent -> {
             int id = comboBox.getSelectedIndex();
             if (this.mairie.divorce(this.frame, id))
                 this.menuPrincipal(false);
         });
-        buttonsPanel.add(confirmButton);
         buttonsPanel.add(this.backButton());
+        buttonsPanel.add(confirmButton);
         panel.add(buttonsPanel);
         this.frame.add(panel);
         this.frame.pack();
@@ -208,6 +213,7 @@ public class Interface {
 
         JPanel buttonsPanel = new JPanel();
         JButton confirmButton = new JButton("Confirmer");
+        confirmButton.setForeground(new Color(46, 142, 95));
         confirmButton.addActionListener(actionEvent -> {
             Sexe sexe = (Sexe) Objects.requireNonNull(sexeBox.getSelectedItem());
             int idP1 = parentBoxes[0].getSelectedIndex();
@@ -217,8 +223,8 @@ public class Interface {
                 this.menuPrincipal(false);
         });
 
-        buttonsPanel.add(confirmButton);
         buttonsPanel.add(this.backButton());
+        buttonsPanel.add(confirmButton);
         panel.add(buttonsPanel);
 
         this.frame.add(panel);
@@ -253,8 +259,8 @@ public class Interface {
                 Utilitaire.showError(this.frame, "Cette personne n'existe pas");
             }
         });
-        buttonsPanel.add(confirmButton);
         buttonsPanel.add(this.backButton());
+        buttonsPanel.add(confirmButton);
         panel.add(buttonsPanel);
 
         this.frame.add(panel);
@@ -264,19 +270,20 @@ public class Interface {
     private void affichageListePersonnes() {
         this.reset(700, 400);
 
-        String[] columnNames = {"Nom", "Prénom", "Sexe", "Date de naissance", "Conjoint", "Parent 1", "Parent 2"};
+        String[] columnNames = {"ID", "Nom", "Prénom", "Sexe", "Date de naissance", "Conjoint", "Parent 1", "Parent 2"};
         Collection<Personne> personnes = database.listerPersonnes();
-        Object[][] data = new Object[personnes.size()][7];
+        Object[][] data = new Object[personnes.size()][8];
 
         int i = 0;
         for (Personne p : personnes) {
-            data[i][0] = p.getNomPrenom().split(" ")[0];
-            data[i][1] = p.getNomPrenom().split(" ")[1];
-            data[i][2] = p.getSexe();
-            data[i][3] = new SimpleDateFormat("dd/MM/yyyy").format(p.getDateNaissance());
-            data[i][4] = p.getConjoint() != null ? p.getConjoint().getNomPrenom() : "";
-            data[i][5] = p.getParents() != null && p.getParents()[0] != null ? p.getParents()[0].getNomPrenom() : "";
-            data[i][6] = p.getParents() != null && p.getParents()[1] != null ? p.getParents()[1].getNomPrenom() : "";
+            data[i][0] = i + 1;
+            data[i][1] = p.getNomPrenom().split(" ")[0];
+            data[i][2] = p.getNomPrenom().split(" ")[1];
+            data[i][3] = p.getSexe();
+            data[i][4] = new SimpleDateFormat("dd/MM/yyyy").format(p.getDateNaissance());
+            data[i][5] = p.getConjoint() != null ? p.getConjoint().getNomPrenom() : "";
+            data[i][6] = p.getParents() != null && p.getParents()[0] != null ? p.getParents()[0].getNomPrenom() : "";
+            data[i][7] = p.getParents() != null && p.getParents()[1] != null ? p.getParents()[1].getNomPrenom() : "";
             i++;
         }
 
@@ -330,14 +337,15 @@ public class Interface {
 
         JPanel buttonsPanel = new JPanel();
         JButton confirmButton = new JButton("Confirmer");
+        confirmButton.setForeground(new Color(46, 142, 95));
         confirmButton.addActionListener(actionEvent -> {
             Sexe sexe = (Sexe) Objects.requireNonNull(sexeBox.getSelectedItem());
             if (this.mairie.naissance(this.frame, -1, -1, sexe, textFields))
                 this.menuPrincipal(false);
         });
 
-        buttonsPanel.add(confirmButton);
         buttonsPanel.add(this.backButton());
+        buttonsPanel.add(confirmButton);
         panel.add(buttonsPanel);
 
         this.frame.add(panel);
@@ -360,6 +368,7 @@ public class Interface {
 
     private JButton backButton() {
         JButton button = new JButton("Retour");
+        button.setForeground(new Color(242, 140, 40));
         button.addActionListener(actionEvent -> this.menuPrincipal(false));
         return button;
     }
