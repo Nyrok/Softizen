@@ -53,6 +53,16 @@ public class Personne {
         this.conjoint = null;
     }
 
+    public void deces(){
+        this.etatCivil = EtatCivil.DECES;
+    }
+
+    public void Veuf(){
+        this.etatCivil = EtatCivil.VEUF;
+    }
+
+
+
     @Override
 
     public String toString() {
