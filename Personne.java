@@ -57,7 +57,7 @@ public class Personne {
         this.etatCivil = EtatCivil.DECES;
     }
 
-    public void Veuf(){
+    public void veuf(){
         this.etatCivil = EtatCivil.VEUF;
     }
 

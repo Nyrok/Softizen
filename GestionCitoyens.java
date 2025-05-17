@@ -1,7 +1,6 @@
 import javax.swing.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.awt.event.ActionListener;
 
 
 public class GestionCitoyens {
@@ -59,7 +58,7 @@ public class GestionCitoyens {
         if (p.getEtatCivil() == EtatCivil.MARIE){
             Personne conjoint = baseDonnees.getPersonne(id);
             p.deces();
-            conjoint.Veuf();
+            conjoint.veuf();
         }else if(p.getEtatCivil() != EtatCivil.MARIE){
             p.deces();
         }

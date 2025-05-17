@@ -27,6 +27,7 @@ public class Menu {
         this.buttonsMap.put("mariage", "Mariage");
         this.buttonsMap.put("divorce", "Divorce");
         this.buttonsMap.put("naissance", "Naissance");
+        this.buttonsMap.put("deces", "Décès");
         this.buttonsMap.put("etatPersonne", "État d'une personne");
         this.buttonsMap.put("affichageListePersonnes", "Affichage de la liste des personnes");
         this.buttonsMap.put("saisiePersonnes", "Saisie des personnes");
@@ -42,7 +43,7 @@ public class Menu {
 
     public void menuPrincipal() {
         this.reset();
-        this.frame.setPreferredSize(new Dimension(300, 300));
+        this.frame.setPreferredSize(new Dimension(300, 350));
         int buttonsMapSize = buttonsMap.size();
         JButton[] buttons = new JButton[buttonsMapSize];
         JPanel panel = new JPanel();
@@ -187,6 +188,10 @@ public class Menu {
 
         this.frame.add(panel);
         this.frame.pack();
+    }
+
+    private void deces() {
+
     }
 
     private void etatPersonne() {
