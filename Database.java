@@ -1,11 +1,11 @@
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class BaseDonnees {
+public class Database {
     public AtomicInteger lastId;
     private final Map<Integer, Personne> personnes = new LinkedHashMap<>();
 
-    public BaseDonnees() {
+    public Database() {
         this.lastId = new AtomicInteger(0);
     }
 

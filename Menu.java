@@ -12,12 +12,12 @@ import javax.swing.*;
 public class Menu {
     JFrame frame;
     LinkedHashMap<String, String> buttonsMap;
-    BaseDonnees baseDonnees;
-    GestionCitoyens gestionCitoyens;
+    Database database;
+    Mairie mairie;
 
-    public Menu(BaseDonnees db, GestionCitoyens gc) {
-        this.baseDonnees = db;
-        this.gestionCitoyens = gc;
+    public Menu(Database db, Mairie gc) {
+        this.database = db;
+        this.mairie = gc;
         this.frame = new JFrame();
         this.frame.setTitle("Softizen");
         this.frame.setVisible(true);
@@ -35,9 +35,9 @@ public class Menu {
     }
 
     public static void main(String[] args) {
-        BaseDonnees baseDonnees = new BaseDonnees();
-        GestionCitoyens gestionCitoyens = new GestionCitoyens(baseDonnees);
-        Menu menu = new Menu(baseDonnees, gestionCitoyens);
+        Database database = new Database();
+        Mairie mairie = new Mairie(database);
+        Menu menu = new Menu(database, mairie);
         menu.menuPrincipal();
     }
 
@@ -74,7 +74,7 @@ public class Menu {
 
     private void mariage() {
         this.reset();
-        this.frame.setPreferredSize(new Dimension(275, 200));
+        this.frame.setPreferredSize(new Dimension(275, 200)); // Définir la taille de la fenêtre
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createEmptyBorder(10, 20, 0, 20));
         panel.setLayout(new GridLayout(3, 1));
@@ -87,7 +87,7 @@ public class Menu {
         for (int i = 0; i < labels.length; i++) {
             labels[i] = new JLabel("Personne " + (i + 1) + " :");
             subPanel.add(labels[i]);
-            comboBoxes[i] = Utilitaire.createComboBox(this.baseDonnees);
+            comboBoxes[i] = Utilitaire.createComboBox(this.database);
             subPanel.add(comboBoxes[i]);
         }
         panel.add(subPanel);
@@ -96,7 +96,7 @@ public class Menu {
         confirmButton.addActionListener(actionEvent -> {
             int idP1 = comboBoxes[0].getSelectedIndex();
             int idP2 = comboBoxes[1].getSelectedIndex();
-            if (this.gestionCitoyens.mariage(this.frame, idP1, idP2))
+            if (this.mairie.mariage(this.frame, idP1, idP2))
                 this.menuPrincipal();
         });
         buttonsPanel.add(confirmButton);
@@ -115,13 +115,13 @@ public class Menu {
         panel.setLayout(new GridLayout(3, 1));
         JLabel title = Utilitaire.createTitle("Sélectionner la personne à divorcer");
         panel.add(title);
-        JComboBox<String> comboBox = Utilitaire.createComboBox(this.baseDonnees);
+        JComboBox<String> comboBox = Utilitaire.createComboBox(this.database);
         panel.add(comboBox);
         JPanel buttonsPanel = new JPanel();
         JButton confirmButton = new JButton("Confirmer");
         confirmButton.addActionListener(actionEvent -> {
             int id = comboBox.getSelectedIndex();
-            if (this.gestionCitoyens.divorce(this.frame, id))
+            if (this.mairie.divorce(this.frame, id))
                 this.menuPrincipal();
         });
         buttonsPanel.add(confirmButton);
@@ -133,7 +133,7 @@ public class Menu {
 
     private void naissance() {
         this.reset();
-        this.frame.setPreferredSize(new Dimension(275, 300));
+        this.frame.setPreferredSize(new Dimension(300, 300));
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -153,7 +153,7 @@ public class Menu {
 
         for (int i = 0; i < 2; i++) {
             parentsPanel.add(parentLabels[i]);
-            parentBoxes[i] = Utilitaire.createComboBox(this.baseDonnees);
+            parentBoxes[i] = Utilitaire.createComboBox(this.database);
             parentsPanel.add(parentBoxes[i]);
         }
         panel.add(parentsPanel);
@@ -178,7 +178,7 @@ public class Menu {
             int idP1 = parentBoxes[0].getSelectedIndex();
             int idP2 = parentBoxes[1].getSelectedIndex();
 
-            if (this.gestionCitoyens.naissance(this.frame, idP1, idP2, sexe, textFields))
+            if (this.mairie.naissance(this.frame, idP1, idP2, sexe, textFields))
                 this.menuPrincipal();
         });
 
@@ -204,14 +204,14 @@ public class Menu {
         JLabel title = Utilitaire.createTitle("Sélectionner une personne");
         panel.add(title);
 
-        JComboBox<String> comboBox = Utilitaire.createComboBox(this.baseDonnees);
+        JComboBox<String> comboBox = Utilitaire.createComboBox(this.database);
         panel.add(comboBox);
 
         JPanel buttonsPanel = new JPanel();
         JButton confirmButton = new JButton("Afficher");
         confirmButton.addActionListener(actionEvent -> {
             int id = comboBox.getSelectedIndex();
-            Personne p = this.baseDonnees.getPersonne(id);
+            Personne p = this.database.getPersonne(id);
             if (p != null) {
                 JOptionPane.showMessageDialog(this.frame, p.toString(),
                         "État de la personne", JOptionPane.INFORMATION_MESSAGE);
@@ -232,7 +232,7 @@ public class Menu {
         this.frame.setPreferredSize(new Dimension(700, 400));
 
         String[] columnNames = {"Nom", "Prénom", "Sexe", "Date de naissance", "Conjoint", "Parent 1", "Parent 2"};
-        Collection<Personne> personnes = baseDonnees.listerPersonnes();
+        Collection<Personne> personnes = database.listerPersonnes();
         Object[][] data = new Object[personnes.size()][7];
 
         int i = 0;
@@ -269,7 +269,7 @@ public class Menu {
 
     private void saisiePersonnes() {
         this.reset();
-        this.frame.setPreferredSize(new Dimension(275, 250));
+        this.frame.setPreferredSize(new Dimension(300, 250));
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -300,7 +300,7 @@ public class Menu {
         JButton confirmButton = new JButton("Confirmer");
         confirmButton.addActionListener(actionEvent -> {
             Sexe sexe = (Sexe) Objects.requireNonNull(sexeBox.getSelectedItem());
-            if (this.gestionCitoyens.naissance(this.frame, -1, -1, sexe, textFields))
+            if (this.mairie.naissance(this.frame, -1, -1, sexe, textFields))
                 this.menuPrincipal();
         });
 

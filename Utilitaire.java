@@ -1,5 +1,3 @@
-import java.awt.event.*;
-import java.awt.*;
 import javax.swing.*;
 import java.util.Collection;
 import java.util.Iterator;
@@ -33,8 +31,8 @@ public class Utilitaire {
         return label;
     }
 
-    public static JComboBox<String> createComboBox(BaseDonnees baseDonnees) {
-        Collection<Personne> listPersonnes = baseDonnees.listerPersonnes();
+    public static JComboBox<String> createComboBox(Database database) {
+        Collection<Personne> listPersonnes = database.listerPersonnes();
         Iterator<Personne> listPersonnesI = listPersonnes.iterator();
         String[] options = new String[listPersonnes.size() + 1];
         options[0] = "--";

@@ -3,17 +3,17 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
-public class GestionCitoyens {
-    BaseDonnees baseDonnees;
+public class Mairie {
+    Database database;
 
-    public GestionCitoyens(BaseDonnees db) {
-        baseDonnees = db;
+    public Mairie(Database db) {
+        database = db;
     }
 
     public boolean mariage(JFrame frame, int id1, int id2) {
         System.out.println("id1: " + id1 + " id2: " + id2);
-        Personne p1 = baseDonnees.getPersonne(id1);
-        Personne p2 = baseDonnees.getPersonne(id2);
+        Personne p1 = database.getPersonne(id1);
+        Personne p2 = database.getPersonne(id2);
 
         if (p1 == null || p2 == null) {
             Utilitaire.showError(frame, "L'une des 2 personnes n'existe pas !");
@@ -36,7 +36,7 @@ public class GestionCitoyens {
     }
 
     public boolean divorce(JFrame frame, int id) {
-        Personne p = baseDonnees.getPersonne(id);
+        Personne p = database.getPersonne(id);
         if (p == null) {
             Utilitaire.showError(frame, "Personne introuvable");
             return false;
@@ -54,9 +54,9 @@ public class GestionCitoyens {
     }
 
     public void deces(int id){
-        Personne p = baseDonnees.getPersonne(id);
+        Personne p = database.getPersonne(id);
         if (p.getEtatCivil() == EtatCivil.MARIE){
-            Personne conjoint = baseDonnees.getPersonne(id);
+            Personne conjoint = database.getPersonne(id);
             p.deces();
             conjoint.veuf();
         }else if(p.getEtatCivil() != EtatCivil.MARIE){
@@ -64,7 +64,7 @@ public class GestionCitoyens {
         }
     }
 
-    public static void suiteDeces(JButton valider, JTextField champParent1, JTextField champParent2, GestionCitoyens gestion, JFrame fnais) {
+    public static void suiteDeces(JButton valider, JTextField champParent1, JTextField champParent2, Mairie gestion, JFrame fnais) {
         valider.addActionListener(e -> {
             try {
 
@@ -75,8 +75,8 @@ public class GestionCitoyens {
                 int idParent2 = Integer.parseInt(parent2);
 
 
-                Personne p1 = gestion.baseDonnees.getPersonne(idParent1);
-                Personne p2 = gestion.baseDonnees.getPersonne(idParent2);
+                Personne p1 = gestion.database.getPersonne(idParent1);
+                Personne p2 = gestion.database.getPersonne(idParent2);
 
                 if (p1 == null || p2 == null) {
                     Utilitaire.showError(fnais, "L'une des 2 personnes n'existe pas !");
@@ -101,33 +101,14 @@ public class GestionCitoyens {
         });
     }
 
-
-
-
-    public void afficherEtat(int id) {
-        Personne p = baseDonnees.getPersonne(id);
-        if (p == null) {
-            System.out.println("Personne introuvable");
-            return;
-        }
-        System.out.println(p);
-    }
-
-    public void afficher() {
-        for (Personne p : baseDonnees.listerPersonnes()) {
-            System.out.println(p);
-            System.out.println("--------------------------------");
-        }
-    }
-
     public boolean naissance(JFrame frame, int idParent1, int idParent2, Sexe sexe, JTextField[] textFields) {
         Personne[] parents = new Personne[2];
         if (idParent1 == -1 && idParent2 == -1) {
             parents[0] = null;
             parents[1] = null;
         } else {
-            Personne parent1 = baseDonnees.getPersonne(idParent1);
-            Personne parent2 = baseDonnees.getPersonne(idParent2);
+            Personne parent1 = database.getPersonne(idParent1);
+            Personne parent2 = database.getPersonne(idParent2);
 
             if (parent1 == null || parent2 == null) {
                 Utilitaire.showError(frame, "L'une des 2 personne n'existe pas");
@@ -161,10 +142,8 @@ public class GestionCitoyens {
             Utilitaire.showError(frame, "Format de date invalide. Utilisez JJ/MM/AAAA");
             return false;
         }
-        baseDonnees.ajouterPersonne(p);
-        JOptionPane.showMessageDialog(frame, "ID: " + baseDonnees.lastId, "Nouvelle naissance ajoutée", JOptionPane.INFORMATION_MESSAGE);
+        database.ajouterPersonne(p);
+        JOptionPane.showMessageDialog(frame, "ID: " + database.lastId, "Nouvelle naissance ajoutée", JOptionPane.INFORMATION_MESSAGE);
         return true;
     }
-
-
 }
