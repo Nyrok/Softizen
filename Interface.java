@@ -9,13 +9,15 @@ import java.util.LinkedHashMap;
 import java.util.Objects;
 import javax.swing.*;
 
-public class Menu {
+public class Interface {
+    public static final Color BACKGROUND_COLOR = new Color(15, 59, 94);
+
     JFrame frame;
     LinkedHashMap<String, String> buttonsMap;
     Database database;
     Mairie mairie;
 
-    public Menu(Database db, Mairie gc) {
+    public Interface(Database db, Mairie gc) {
         this.database = db;
         this.mairie = gc;
         this.frame = new JFrame();
@@ -37,16 +39,45 @@ public class Menu {
     public static void main(String[] args) {
         Database database = new Database();
         Mairie mairie = new Mairie(database);
-        Menu menu = new Menu(database, mairie);
-        menu.menuPrincipal();
+        Interface menu = new Interface(database, mairie);
+        menu.splashScreen();
     }
 
-    public void menuPrincipal() {
-        this.reset();
-        this.frame.setPreferredSize(new Dimension(300, 350));
+    public void splashScreen() {
+        ImageIcon logoIcon = new ImageIcon("splash.png");
+        JWindow window = new JWindow();
+        JLabel logo = new JLabel("", logoIcon,
+                SwingConstants.CENTER);
+        logo.setAlignmentX(Component.CENTER_ALIGNMENT);
+        logo.setAlignmentY(Component.CENTER_ALIGNMENT);
+        window.getContentPane().add(logo);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        window.setBounds((screenSize.width - logoIcon.getIconWidth()) / 2,
+                (screenSize.height - logoIcon.getIconHeight()) / 2,
+                logoIcon.getIconWidth(),
+                logoIcon.getIconHeight());
+        window.setVisible(true);
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            System.err.println(e.getMessage());
+        }
+        window.setVisible(false);
+        this.menuPrincipal(true);
+    }
+
+    public void menuPrincipal(boolean initialLaunch) {
+        int width = 300, height = 350;
+        if (initialLaunch) {
+            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+            this.frame.setBounds((screenSize.width - width) / 2,
+                    (screenSize.height - height) / 2, 0, 0);
+        }
+        this.reset(width, height);
         int buttonsMapSize = buttonsMap.size();
         JButton[] buttons = new JButton[buttonsMapSize];
         JPanel panel = new JPanel();
+        panel.setBackground(BACKGROUND_COLOR);
         panel.setLayout(new GridLayout(buttonsMapSize, 1));
         Iterator<String> keysIterator = this.buttonsMap.keySet().iterator();
         Iterator<String> valuesIterator = this.buttonsMap.values().iterator();
@@ -66,15 +97,21 @@ public class Menu {
         this.frame.pack();
     }
 
-    private void reset() {
+    private void reset(int width, int height) {
+        ImageIcon logoIcon = new ImageIcon("logo.png");
         this.frame.getContentPane().removeAll();
         this.frame.repaint();
         this.frame.revalidate();
+        this.frame.setPreferredSize(new Dimension(width, height + logoIcon.getIconHeight()));
+        this.frame.getContentPane().setLayout(new BoxLayout(this.frame.getContentPane(), BoxLayout.Y_AXIS));
+        JLabel logo = new JLabel("", logoIcon,
+                SwingConstants.CENTER);
+        logo.setAlignmentX(Component.CENTER_ALIGNMENT);
+        this.frame.getContentPane().add(logo);
     }
 
     private void mariage() {
-        this.reset();
-        this.frame.setPreferredSize(new Dimension(275, 200)); // Définir la taille de la fenêtre
+        this.reset(275, 200);
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createEmptyBorder(10, 20, 0, 20));
         panel.setLayout(new GridLayout(3, 1));
@@ -97,7 +134,7 @@ public class Menu {
             int idP1 = comboBoxes[0].getSelectedIndex();
             int idP2 = comboBoxes[1].getSelectedIndex();
             if (this.mairie.mariage(this.frame, idP1, idP2))
-                this.menuPrincipal();
+                this.menuPrincipal(false);
         });
         buttonsPanel.add(confirmButton);
         buttonsPanel.add(this.backButton());
@@ -108,8 +145,7 @@ public class Menu {
 
 
     private void divorce() {
-        this.reset();
-        this.frame.setPreferredSize(new Dimension(275, 150));
+        this.reset(275, 150);
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createEmptyBorder(10, 20, 0, 20));
         panel.setLayout(new GridLayout(3, 1));
@@ -122,7 +158,7 @@ public class Menu {
         confirmButton.addActionListener(actionEvent -> {
             int id = comboBox.getSelectedIndex();
             if (this.mairie.divorce(this.frame, id))
-                this.menuPrincipal();
+                this.menuPrincipal(false);
         });
         buttonsPanel.add(confirmButton);
         buttonsPanel.add(this.backButton());
@@ -132,8 +168,7 @@ public class Menu {
     }
 
     private void naissance() {
-        this.reset();
-        this.frame.setPreferredSize(new Dimension(300, 300));
+        this.reset(300, 300);
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -179,7 +214,7 @@ public class Menu {
             int idP2 = parentBoxes[1].getSelectedIndex();
 
             if (this.mairie.naissance(this.frame, idP1, idP2, sexe, textFields))
-                this.menuPrincipal();
+                this.menuPrincipal(false);
         });
 
         buttonsPanel.add(confirmButton);
@@ -195,8 +230,7 @@ public class Menu {
     }
 
     private void etatPersonne() {
-        this.reset();
-        this.frame.setPreferredSize(new Dimension(275, 150));
+        this.reset(275, 150);
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createEmptyBorder(10, 20, 0, 20));
         panel.setLayout(new GridLayout(3, 1));
@@ -228,8 +262,7 @@ public class Menu {
     }
 
     private void affichageListePersonnes() {
-        this.reset();
-        this.frame.setPreferredSize(new Dimension(700, 400));
+        this.reset(700, 400);
 
         String[] columnNames = {"Nom", "Prénom", "Sexe", "Date de naissance", "Conjoint", "Parent 1", "Parent 2"};
         Collection<Personne> personnes = database.listerPersonnes();
@@ -268,8 +301,7 @@ public class Menu {
     }
 
     private void saisiePersonnes() {
-        this.reset();
-        this.frame.setPreferredSize(new Dimension(300, 250));
+        this.reset(300, 250);
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -301,7 +333,7 @@ public class Menu {
         confirmButton.addActionListener(actionEvent -> {
             Sexe sexe = (Sexe) Objects.requireNonNull(sexeBox.getSelectedItem());
             if (this.mairie.naissance(this.frame, -1, -1, sexe, textFields))
-                this.menuPrincipal();
+                this.menuPrincipal(false);
         });
 
         buttonsPanel.add(confirmButton);
@@ -328,7 +360,7 @@ public class Menu {
 
     private JButton backButton() {
         JButton button = new JButton("Retour");
-        button.addActionListener(actionEvent -> this.menuPrincipal());
+        button.addActionListener(actionEvent -> this.menuPrincipal(false));
         return button;
     }
 }
