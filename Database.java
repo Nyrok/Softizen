@@ -32,7 +32,7 @@ public class Database {
             for (Personne p : personnes.values()) {
                 writer.println(p.getNom() + "," +
                         p.getPrenom() + "," +
-                        p.getDateNaissance() + "," +
+                        new SimpleDateFormat("dd/MM/yyyy").format(p.getDateNaissance()) + "," +
                         p.getSexe() + "," +
                         p.getEtatCivil()
                 );
