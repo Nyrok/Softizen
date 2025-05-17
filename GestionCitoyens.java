@@ -1,6 +1,8 @@
 import javax.swing.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.awt.event.ActionListener;
+
 
 public class GestionCitoyens {
     BaseDonnees baseDonnees;
@@ -51,6 +53,57 @@ public class GestionCitoyens {
         JOptionPane.showMessageDialog(frame, "Divorce réussi !");
         return true;
     }
+
+    public void deces(int id){
+        Personne p = baseDonnees.getPersonne(id);
+        if (p.getEtatCivil() == EtatCivil.MARIE){
+            Personne conjoint = baseDonnees.getPersonne(id);
+            p.deces();
+            conjoint.Veuf();
+        }else if(p.getEtatCivil() != EtatCivil.MARIE){
+            p.deces();
+        }
+    }
+
+    public static void suiteDeces(JButton valider, JTextField champParent1, JTextField champParent2, GestionCitoyens gestion, JFrame fnais) {
+        valider.addActionListener(e -> {
+            try {
+
+                String parent1 = champParent1.getText();
+                String parent2 = champParent2.getText();
+
+                int idParent1 = Integer.parseInt(parent1);
+                int idParent2 = Integer.parseInt(parent2);
+
+
+                Personne p1 = gestion.baseDonnees.getPersonne(idParent1);
+                Personne p2 = gestion.baseDonnees.getPersonne(idParent2);
+
+                if (p1 == null || p2 == null) {
+                    Utilitaire.showError(fnais, "L'une des 2 personnes n'existe pas !");
+                    return;
+                }
+
+                if (idParent1 == idParent2) {
+                    Utilitaire.showError(fnais, "Vous devez déclarer deux parents différents !");
+                    return;
+                }
+
+                if (p1.getEtatCivil() == EtatCivil.DECES || p2.getEtatCivil() == EtatCivil.DECES) {
+                    Utilitaire.showError(fnais, "Une des personnes est décédée");
+                    return;
+                }
+
+            } catch (NumberFormatException ex) {
+                Utilitaire.showError(fnais, "Les IDs doivent être des nombres");
+            } catch (Exception ex) {
+                Utilitaire.showError(fnais, "Erreur : " + ex.getMessage());
+            }
+        });
+    }
+
+
+
 
     public void afficherEtat(int id) {
         Personne p = baseDonnees.getPersonne(id);

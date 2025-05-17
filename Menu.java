@@ -98,6 +98,7 @@ public class Menu {
         this.frame.pack();
     }
 
+
     private void divorce() {
         this.reset();
         this.frame.setPreferredSize(new Dimension(275, 150));
