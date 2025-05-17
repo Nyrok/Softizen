@@ -33,6 +33,13 @@ public class Menu {
         this.buttonsMap.put("quitterProgramme", "Quitter le programme");
     }
 
+    public static void main(String[] args) {
+        BaseDonnees baseDonnees = new BaseDonnees();
+        GestionCitoyens gestionCitoyens = new GestionCitoyens(baseDonnees);
+        Menu menu = new Menu(baseDonnees, gestionCitoyens);
+        menu.menuPrincipal();
+    }
+
     public void menuPrincipal() {
         this.reset();
         this.frame.setPreferredSize(new Dimension(300, 300));
