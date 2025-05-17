@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.Objects;
 import javax.swing.*;
 
 public class Menu {
@@ -81,7 +82,7 @@ public class Menu {
         panel.add(subPanel);
         JPanel buttonsPanel = new JPanel();
         JButton confirmButton = new JButton("Confirmer");
-        confirmButton.addActionListener(_ -> {
+        confirmButton.addActionListener(actionEvent -> {
             int idP1 = comboBoxes[0].getSelectedIndex();
             int idP2 = comboBoxes[1].getSelectedIndex();
             if (this.gestionCitoyens.mariage(this.frame, idP1, idP2))
@@ -106,7 +107,7 @@ public class Menu {
         panel.add(comboBox);
         JPanel buttonsPanel = new JPanel();
         JButton confirmButton = new JButton("Confirmer");
-        confirmButton.addActionListener(_ -> {
+        confirmButton.addActionListener(actionEvent -> {
             int id = comboBox.getSelectedIndex();
             if (this.gestionCitoyens.divorce(this.frame, id))
                 this.menuPrincipal();
@@ -145,23 +146,28 @@ public class Menu {
         }
         panel.add(parentsPanel);
 
-        String[] labels = {"Nom :", "Prénom :", "Date (JJ/MM/AAAA) :", "Sexe (M/F) :"};
-        JTextField[] textFields = new JTextField[4];
+        String[] labels = {"Nom :", "Prénom :", "Date (JJ/MM/AAAA) :"};
+        JTextField[] textFields = new JTextField[3];
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 3; i++) {
             parentsPanel.add(new JLabel(labels[i]));
             textFields[i] = new JTextField();
             parentsPanel.add(textFields[i]);
         }
+        String[] sexes = {"Homme", "Femme"};
+        parentsPanel.add(new JLabel("Sexe :"));
+        JComboBox<String> sexeBox = new JComboBox<>(sexes);
+        parentsPanel.add(sexeBox);
         panel.add(parentsPanel);
 
         JPanel buttonsPanel = new JPanel();
         JButton confirmButton = new JButton("Confirmer");
-        confirmButton.addActionListener(_ -> {
+        confirmButton.addActionListener(actionEvent -> {
+            String sexe = Objects.requireNonNull(sexeBox.getSelectedItem()).toString();
             int idP1 = parentBoxes[0].getSelectedIndex();
             int idP2 = parentBoxes[1].getSelectedIndex();
 
-            if (this.gestionCitoyens.naissance(this.frame, idP1, idP2, textFields))
+            if (this.gestionCitoyens.naissance(this.frame, idP1, idP2, sexe, textFields))
                 this.menuPrincipal();
         });
 
@@ -201,7 +207,7 @@ public class Menu {
 
     private JButton backButton() {
         JButton button = new JButton("Retour");
-        button.addActionListener(_ -> this.menuPrincipal());
+        button.addActionListener(actionEvent -> this.menuPrincipal());
         return button;
     }
 }

@@ -60,7 +60,7 @@ public class GestionCitoyens {
         }
     }
 
-    public boolean naissance(JFrame frame, int idParent1, int idParent2, JTextField[] textFields) {
+    public boolean naissance(JFrame frame, int idParent1, int idParent2, String sexe, JTextField[] textFields) {
         Personne parent1 = baseDonnees.getPersonne(idParent1);
         Personne parent2 = baseDonnees.getPersonne(idParent2);
 
@@ -76,9 +76,8 @@ public class GestionCitoyens {
         String nom = textFields[0].getText();
         String prenom = textFields[1].getText();
         String dateNaissance = textFields[2].getText();
-        String sexe = textFields[3].getText();
 
-        if (nom.isEmpty() || prenom.isEmpty() || dateNaissance.isEmpty() || sexe.isEmpty()) {
+        if (nom.isEmpty() || prenom.isEmpty() || dateNaissance.isEmpty()) {
             JOptionPane.showMessageDialog(frame, "Veuillez remplir tous les champs");
             return false;
         }
