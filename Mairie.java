@@ -12,8 +12,8 @@ public class Mairie {
 
     public boolean mariage(JFrame frame, int id1, int id2) {
         System.out.println("id1: " + id1 + " id2: " + id2);
-        Personne p1 = database.getPersonne(id1);
-        Personne p2 = database.getPersonne(id2);
+        Personne p1 = this.database.getPersonne(id1);
+        Personne p2 = this.database.getPersonne(id2);
 
         if (p1 == null || p2 == null) {
             Utilitaire.showError(frame, "L'une des 2 personnes n'existe pas !");
@@ -36,7 +36,7 @@ public class Mairie {
     }
 
     public boolean divorce(JFrame frame, int id) {
-        Personne p = database.getPersonne(id);
+        Personne p = this.database.getPersonne(id);
         if (p == null) {
             Utilitaire.showError(frame, "Personne introuvable");
             return false;
@@ -73,51 +73,14 @@ public class Mairie {
         return true;
     }
 
-    public static void suiteDeces(JButton valider, JTextField champParent1, JTextField champParent2, Mairie gestion, JFrame fnais) {
-        valider.addActionListener(e -> {
-            try {
-
-                String parent1 = champParent1.getText();
-                String parent2 = champParent2.getText();
-
-                int idParent1 = Integer.parseInt(parent1);
-                int idParent2 = Integer.parseInt(parent2);
-
-
-                Personne p1 = gestion.database.getPersonne(idParent1);
-                Personne p2 = gestion.database.getPersonne(idParent2);
-
-                if (p1 == null || p2 == null) {
-                    Utilitaire.showError(fnais, "L'une des 2 personnes n'existe pas !");
-                    return;
-                }
-
-                if (idParent1 == idParent2) {
-                    Utilitaire.showError(fnais, "Vous devez déclarer deux parents différents !");
-                    return;
-                }
-
-                if (p1.getEtatCivil() == EtatCivil.DECES || p2.getEtatCivil() == EtatCivil.DECES) {
-                    Utilitaire.showError(fnais, "Une des personnes est décédée");
-                    return;
-                }
-
-            } catch (NumberFormatException ex) {
-                Utilitaire.showError(fnais, "Les IDs doivent être des nombres");
-            } catch (Exception ex) {
-                Utilitaire.showError(fnais, "Erreur : " + ex.getMessage());
-            }
-        });
-    }
-
     public boolean naissance(JFrame frame, int idParent1, int idParent2, Sexe sexe, JTextField[] textFields) {
         Personne[] parents = new Personne[2];
         if (idParent1 == -1 && idParent2 == -1) {
             parents[0] = null;
             parents[1] = null;
         } else {
-            Personne parent1 = database.getPersonne(idParent1);
-            Personne parent2 = database.getPersonne(idParent2);
+            Personne parent1 = this.database.getPersonne(idParent1);
+            Personne parent2 = this.database.getPersonne(idParent2);
 
             if (parent1 == null || parent2 == null) {
                 Utilitaire.showError(frame, "L'une des 2 personne n'existe pas");
@@ -151,8 +114,8 @@ public class Mairie {
             Utilitaire.showError(frame, "Format de date invalide. Utilisez JJ/MM/AAAA");
             return false;
         }
-        database.ajouterPersonne(p);
-        JOptionPane.showMessageDialog(frame, "ID: " + database.lastId, "Nouvelle naissance ajoutée", JOptionPane.INFORMATION_MESSAGE);
+        this.database.ajouterPersonne(p);
+        JOptionPane.showMessageDialog(frame, "ID: " + this.database.lastId, "Nouvelle naissance ajoutée", JOptionPane.INFORMATION_MESSAGE);
         return true;
     }
 }

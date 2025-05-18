@@ -7,6 +7,7 @@ public class Personne {
     private final String prenom;
     private final Date dateNaissance;
     private final Sexe sexe;
+    private int id;
     private EtatCivil etatCivil;
     private Personne conjoint;
     private LocalDate dateDeces;
@@ -21,7 +22,6 @@ public class Personne {
         this.conjoint = null;
         this.dateDeces = null;
     }
-
 
     public Personne[] getParents() {
         return parents;
@@ -95,5 +95,13 @@ public class Personne {
         return nom + " " + prenom + " | Né(e) le: " + dateNaissance +
                 " | Sexe: " + sexe + " | État civil: " + etatCivil +
                 (conjoint != null ? " | Conjoint: " + conjoint.getNomPrenom() : "");
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
