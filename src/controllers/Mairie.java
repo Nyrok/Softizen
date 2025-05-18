@@ -17,7 +17,6 @@ public class Mairie {
     }
 
     public boolean mariage(JFrame frame, int id1, int id2) {
-        System.out.println("id1: " + id1 + " id2: " + id2);
         Personne p1 = this.database.getPersonne(id1);
         Personne p2 = this.database.getPersonne(id2);
 
