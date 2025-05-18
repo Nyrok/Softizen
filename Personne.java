@@ -14,8 +14,8 @@ public class Personne {
 
     public Personne(Personne[] parents, String nom, String prenom, Date dateNaissance, Sexe sexe) {
         this.parents = parents;
-        this.nom = nom.toUpperCase();
-        this.prenom = prenom;
+        this.nom = nom.toUpperCase().trim();
+        this.prenom = prenom.trim();
         this.dateNaissance = dateNaissance;
         this.sexe = sexe;
         this.etatCivil = EtatCivil.CELIBATAIRE;
