@@ -4,6 +4,7 @@ import src.controllers.Database;
 import src.controllers.Mairie;
 
 import java.awt.*;
+import java.net.URL;
 import java.util.LinkedHashMap;
 import javax.swing.*;
 
@@ -50,7 +51,10 @@ public class Interface {
     }
 
     private void reset(int width, int height) {
-        ImageIcon logoIcon = new ImageIcon("src/resources/logo.png");
+        URL logoURL = this.getClass().getResource("/logo.png");
+        if (logoURL == null)
+            throw new IllegalArgumentException("Logo file is missing.");
+        ImageIcon logoIcon = new ImageIcon(logoURL);
         this.frame.getContentPane().removeAll();
         this.frame.repaint();
         this.frame.revalidate();

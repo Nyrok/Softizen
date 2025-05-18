@@ -2,13 +2,14 @@ package src.views;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.net.URL;
 
 public final class SplashWindow extends JWindow {
     public SplashWindow(Interface interfaceView) {
-        ImageIcon logoIcon = new ImageIcon("src/resources/splash.png");
+        URL iconURL = this.getClass().getResource("/splash.png");
+        if (iconURL == null)
+            throw new IllegalArgumentException("Splash file is missing.");
+        ImageIcon logoIcon = new ImageIcon(iconURL);
         JLabel logo = new JLabel("", logoIcon,
                 SwingConstants.CENTER);
         logo.setAlignmentX(Component.CENTER_ALIGNMENT);
