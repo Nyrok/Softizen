@@ -51,5 +51,5 @@ Gère les dossiers individuels :
 
 
 ## Équipe de Développement
-- Hamza KONTE ([@Nyrok](https://github.com/Nyrok)) - Architecture & Backend
-- Yassine BAKADIR ([@userysn](https://github.com/userysn)) - Interface & Documentation
+- Hamza KONTE ([@Nyrok](https://github.com/Nyrok)) - Architecture & Inferface
+- Yassine BAKADIR ([@userysn](https://github.com/userysn)) - Backend & Documentation
