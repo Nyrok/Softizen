@@ -9,7 +9,6 @@ public class Personne {
     private final Sexe sexe;
     private EtatCivil etatCivil;
     private Personne conjoint;
-    private boolean veuf;
     private LocalDate dateDeces;
 
     public Personne(Personne[] parents, String nom, String prenom, Date dateNaissance, Sexe sexe) {
@@ -22,8 +21,6 @@ public class Personne {
         this.conjoint = null;
         this.dateDeces = null;
     }
-
-
 
 
     public Personne[] getParents() {
@@ -62,27 +59,17 @@ public class Personne {
         return conjoint;
     }
 
-    public void setConjoint(Personne conjoint){
+    public void setConjoint(Personne conjoint) {
         if (this.conjoint != null && conjoint == null) {
-        this.veuf = true;
-    }
+            this.etatCivil = EtatCivil.VEUF;
+        }
         this.conjoint = conjoint;
     }
 
-    public boolean isDecedes() {return dateDeces != null;}
-
-    public boolean isVeuf() {return this.veuf;}
-
     public void deces() {
-        if (!isDecedes()) {  // On vérifie que la personne n'est pas déjà décédée
+        if (this.etatCivil != EtatCivil.DECES) {  // On vérifie que la personne n'est pas déjà décédée
             this.dateDeces = LocalDate.now();
-
-            // Si la personne était mariée, son conjoint devient veuf/veuve
-            if (this.conjoint != null) {
-                Personne conjointTemp = this.conjoint;
-                this.conjoint = null;            // La personne décédée n'est plus mariée
-                conjointTemp.setConjoint(null);  // Le conjoint devient veuf/veuve
-            }
+            this.etatCivil = EtatCivil.DECES;
         }
     }
 
@@ -101,11 +88,6 @@ public class Personne {
         this.etatCivil = EtatCivil.DIVORCE;
         this.conjoint = null;
     }
-
-    public void veuf() {
-        this.etatCivil = EtatCivil.VEUF;
-    }
-
 
     @Override
 

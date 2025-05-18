@@ -31,7 +31,7 @@ public class Mairie {
         }
         p1.marier(p2);
         p2.marier(p1);
-        JOptionPane.showMessageDialog(frame, "Mariage réussi !");
+        JOptionPane.showMessageDialog(frame, "Mariage enregistré avec succès !");
         return true;
     }
 
@@ -49,19 +49,28 @@ public class Mairie {
         Personne conjoint = p.getConjoint();
         p.divorcer();
         conjoint.divorcer();
-        JOptionPane.showMessageDialog(frame, "Divorce réussi !");
+        JOptionPane.showMessageDialog(frame, "Divorce enregistré avec succès !");
         return true;
     }
 
-    public void deces(int id){
-        Personne p = database.getPersonne(id);
-        if (p.getEtatCivil() == EtatCivil.MARIE){
-            Personne conjoint = database.getPersonne(id);
-            p.deces();
-            conjoint.veuf();
-        }else if(p.getEtatCivil() != EtatCivil.MARIE){
-            p.deces();
+    public boolean deces(JFrame frame, int id) {
+        Personne p = this.database.getPersonne(id);
+        if (p == null) {
+            Utilitaire.showError(frame, "La personne n'existe pas.");
+            return false;
         }
+        if (p.getEtatCivil() == EtatCivil.DECES) {
+            Utilitaire.showError(frame, "Cette personne est deja décedée");
+            return false;
+        }
+        if (p.getEtatCivil() == EtatCivil.MARIE) {
+            Personne conjoint = p.getConjoint();
+            conjoint.setConjoint(null);
+            conjoint.setEtatCivil(EtatCivil.VEUF);
+        }
+        p.deces();
+        JOptionPane.showMessageDialog(frame, "Décès enregistré avec succès !");
+        return true;
     }
 
     public static void suiteDeces(JButton valider, JTextField champParent1, JTextField champParent2, Mairie gestion, JFrame fnais) {

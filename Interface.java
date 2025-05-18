@@ -1,5 +1,3 @@
-import jdk.jshell.execution.Util;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.lang.reflect.InvocationTargetException;
@@ -10,7 +8,6 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Objects;
 import javax.swing.*;
-import javax.swing.text.Utilities;
 
 public class Interface {
     public static final Color BACKGROUND_COLOR = new Color(15, 59, 94);
@@ -251,23 +248,8 @@ public class Interface {
         confirmButton.setForeground(new Color(46, 142, 95));
         confirmButton.addActionListener(actionEvent -> {
             int id = comboBox.getSelectedIndex();
-            Personne decedee = this.database.getPersonne(id);
-            if (decedee != null){
-                if (decedee.isDecedes()){
-                    Utilitaire.showError(this.frame, "Cette personne est deja décedée");
-                    return;
-                }
-                decedee.isDecedes();
-                if (decedee.getParents() != null) {
-                    Personne conjoint = decedee.getConjoint();
-                    conjoint.setConjoint(null);
-                }
-                JOptionPane.showMessageDialog(this.frame, "Décés de " + decedee+ decedee.getNomPrenom() + "enregsitré",
-                        "confirmation", JOptionPane.INFORMATION_MESSAGE);
+            if (this.mairie.deces(this.frame, id))
                 this.menuPrincipal(false);
-            }else{
-                Utilitaire.showError(this.frame, "Cette personne n'existe pas");
-            }
         });
 
         buttonsPanel.add(this.backButton());
@@ -299,14 +281,14 @@ public class Interface {
             if (p != null) {
                 String messageText = p.toString();
 
-                if (p.isDecedes()) {
+                if (p.getEtatCivil() == EtatCivil.DECES) {
                     messageText += "\n\nStatut : Décédé(e)";
                 } else {
                     messageText += "\n\nStatut : Vivant(e)";
                     if (p.getConjoint() != null) {
                         messageText += "\nMarié(e) avec : " + p.getConjoint().getNomPrenom();
                     } else {
-                        if (p.isVeuf()) {
+                        if (p.getEtatCivil() == EtatCivil.VEUF) {
                             messageText += "\nVeuf/Veuve";
                         }
                     }
@@ -327,11 +309,11 @@ public class Interface {
     }
 
     private void affichageListePersonnes() {
-        this.reset(700, 400);
+        this.reset(800, 400);
 
-        String[] columnNames = {"ID", "Nom", "Prénom", "Sexe", "Date de naissance", "Conjoint", "Parent 1", "Parent 2"};
+        String[] columnNames = {"ID", "Nom", "Prénom", "Sexe", "Date de naissance", "Etat civil", "Conjoint", "Parent 1", "Parent 2"};
         Collection<Personne> personnes = database.listerPersonnes();
-        Object[][] data = new Object[personnes.size()][8];
+        Object[][] data = new Object[personnes.size()][9];
 
         int i = 0;
         for (Personne p : personnes) {
@@ -340,9 +322,10 @@ public class Interface {
             data[i][2] = p.getNomPrenom().split(" ")[1];
             data[i][3] = p.getSexe();
             data[i][4] = new SimpleDateFormat("dd/MM/yyyy").format(p.getDateNaissance());
-            data[i][5] = p.getConjoint() != null ? p.getConjoint().getNomPrenom() : "";
-            data[i][6] = p.getParents() != null && p.getParents()[0] != null ? p.getParents()[0].getNomPrenom() : "";
-            data[i][7] = p.getParents() != null && p.getParents()[1] != null ? p.getParents()[1].getNomPrenom() : "";
+            data[i][5] = p.getEtatCivil();
+            data[i][6] = p.getConjoint() != null ? p.getConjoint().getNomPrenom() : "";
+            data[i][7] = p.getParents() != null && p.getParents()[0] != null ? p.getParents()[0].getNomPrenom() : "";
+            data[i][8] = p.getParents() != null && p.getParents()[1] != null ? p.getParents()[1].getNomPrenom() : "";
             i++;
         }
 
