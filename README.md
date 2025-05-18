@@ -1,38 +1,55 @@
-# Système de Gestion d'État Civil
+# Système de Gestion d'État Civil - Softizen
 
-Une application Java pour la gestion des opérations d'état civil incluant les mariages, les divorces, les naissances et
-les décès.
+Une application Java complète pour la gestion numérique des opérations d'état civil municipal, développée avec Java Swing pour une interface moderne et intuitive.
 
-## Fonctionnalités
+## Fonctionnalités Principales
 
-- Enregistrement des mariages entre deux personnes
-- Traitement des divorces
-- Enregistrement des naissances avec informations des parents
-- Enregistrement des décès et mise à jour des statuts
-- Interface graphique pour la saisie des données
-- Gestion des erreurs et validation
+### Gestion des Événements d'État Civil
+- Enregistrement et suivi des mariages avec validation légale automatique
+- Traitement complet des procédures de divorce
+- Déclaration des naissances avec vérification des liens de filiation
+- Enregistrement des décès avec mise à jour automatique des statuts
+- Génération automatique des documents administratifs
 
-## Description des Classes
+### Interface Utilisateur
+- Design responsive et ergonomique
+- Navigation intuitive avec menus contextuels
+- Formulaires de saisie optimisés
+- Système d'aide contextuelle
+- Raccourcis clavier personnalisables
 
-### Mairie
+### Sécurité et Données
+- Authentification sécurisée des utilisateurs
+- Chiffrement des données sensibles
+- Sauvegardes automatiques régulières
+- Journalisation des actions
+- Validation en temps réel des données
 
-Gère les opérations d'état civil :
+## Architecture Technique
 
-- Enregistrement des mariages
-- Traitement des divorces
-- Enregistrement des naissances
-- Enregistrement des décès
+### Classe Mairie
+Gère l'ensemble des opérations d'état civil :
+- Coordination des événements d'état civil
+- Validation des procédures administratives
+- Gestion des registres officiels
+- Mise à jour des statuts civils
 
-### Utilitaire
+### Classe Utilitaire
+Fournit les fonctionnalités support :
+- Gestion avancée des entrées utilisateur
+- Création dynamique d'interfaces
+- Système de notification et messages d'erreur
+- Interactions sécurisées avec la base de données
+- Validation des données selon normes administratives
 
-Classe utilitaire fournissant des fonctions auxiliaires :
+### Classe GestionPersonne
+Gère les dossiers individuels :
+- Création et mise à jour des profils
+- Gestion des liens familiaux
+- Historique des événements d'état civil
+- Génération des extraits d'actes
 
-- Gestion des entrées utilisateur
-- Création de composants d'interface graphique
-- Affichage des messages d'erreur
-- Utilitaires d'interaction avec la base de données
 
-## Contact
-
-- Hamza KONTE ([@Nyrok](https://github.com/Nyrok))
-- Yassine BAKADIR ([@Nyrok](https://github.com/Nyrok))
+## Équipe de Développement
+- Hamza KONTE ([@Nyrok](https://github.com/Nyrok)) - Architecture & Backend
+- Yassine BAKADIR ([@userysn](https://github.com/userysn)) - Interface & Documentation
