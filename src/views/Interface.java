@@ -2,13 +2,8 @@ package src.views;
 
 import src.controllers.Database;
 import src.controllers.Mairie;
-import src.utils.Utilitaire;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import javax.swing.*;
 
@@ -38,27 +33,7 @@ public class Interface {
     }
 
     public void splashScreen() {
-        ImageIcon logoIcon = new ImageIcon("src/resources/splash.png");
-        JWindow window = new JWindow();
-        JLabel logo = new JLabel("", logoIcon,
-                SwingConstants.CENTER);
-        logo.setAlignmentX(Component.CENTER_ALIGNMENT);
-        logo.setAlignmentY(Component.CENTER_ALIGNMENT);
-        window.getContentPane().add(logo);
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        window.setBounds((screenSize.width - logoIcon.getIconWidth()) / 2,
-                (screenSize.height - logoIcon.getIconHeight()) / 2,
-                logoIcon.getIconWidth(),
-                logoIcon.getIconHeight());
-        window.setVisible(true);
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            System.err.println(e.getMessage());
-        }
-        window.setVisible(false);
-        window.dispose();
-        this.menuPrincipal(true);
+        new SplashWindow(this);
     }
 
     public void menuPrincipal(boolean initialLaunch) {
@@ -69,27 +44,8 @@ public class Interface {
                     (screenSize.height - height) / 2, 0, 0);
         }
         this.reset(width, height);
-        int buttonsMapSize = buttonsMap.size();
-        JButton[] buttons = new JButton[buttonsMapSize];
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(buttonsMapSize, 1));
-        Iterator<String> keysIterator = this.buttonsMap.keySet().iterator();
-        Iterator<String> valuesIterator = this.buttonsMap.values().iterator();
-        int i = 0;
-        String key, value;
-        while (valuesIterator.hasNext()) {
-            key = keysIterator.next();
-            value = valuesIterator.next();
-            buttons[i] = new JButton(value);
-            buttons[i].setSize(this.frame.getWidth(), 20);
-            buttons[i].setActionCommand(key);
-            buttons[i].addActionListener(this::buttonCallback);
-            if (!valuesIterator.hasNext())
-                buttons[i].setForeground(Color.RED);
-            panel.add(buttons[i]);
-            i++;
-        }
-        this.frame.add(panel);
+        JPanel view = new MainView(this);
+        this.frame.add(view);
         this.frame.pack();
     }
 
@@ -158,15 +114,5 @@ public class Interface {
     private void quitterProgramme() {
         this.database.save();
         System.exit(0);
-    }
-
-    private void buttonCallback(ActionEvent actionEvent) {
-        String methodName = actionEvent.getActionCommand();
-        try {
-            Method method = this.getClass().getDeclaredMethod(methodName);
-            method.invoke(this);
-        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException exception) {
-            System.err.println(exception.getMessage());
-        }
     }
 }
