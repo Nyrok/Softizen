@@ -17,7 +17,6 @@ public class Database {
         int id = lastId.incrementAndGet();
         personnes.put(id, p);
         p.setId(id);
-        System.out.println("Ajout de " + p.getNomPrenom() + " avec l'ID: " + p.getId());
     }
 
     public Personne getPersonne(int id) {
@@ -74,8 +73,7 @@ public class Database {
                 Personne p1 = this.getPersonne(m.getKey());
                 Personne p2 = this.getPersonne(m.getValue());
                 if (p1 != null && p2 != null) {
-                    p1.marier(p2);
-                    p2.marier(p1);
+                    p1.setConjoint(p2);
                 }
             }
         } catch (Exception e) {

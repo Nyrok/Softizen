@@ -67,10 +67,8 @@ public class Personne {
     }
 
     public void deces() {
-        if (this.etatCivil != EtatCivil.DECES) {  // On vérifie que la personne n'est pas déjà décédée
-            this.dateDeces = LocalDate.now();
-            this.etatCivil = EtatCivil.DECES;
-        }
+        this.dateDeces = LocalDate.now();
+        this.etatCivil = EtatCivil.DECES;
     }
 
     // Méthode pour obtenir la date de décès
