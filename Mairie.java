@@ -2,7 +2,6 @@ import javax.swing.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-
 public class Mairie {
     Database database;
 

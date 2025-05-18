@@ -92,7 +92,7 @@ public class Personne {
     @Override
 
     public String toString() {
-        return nom + " " + prenom + " | Né(e) le: " + dateNaissance +
+        return "ID:" + id + " | " + nom + " " + prenom + " | Né(e) le: " + dateNaissance +
                 " | Sexe: " + sexe + " | État civil: " + etatCivil +
                 (conjoint != null ? " | Conjoint: " + conjoint.getNomPrenom() : "");
     }
