@@ -1,3 +1,5 @@
+import jdk.jshell.execution.Util;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.lang.reflect.InvocationTargetException;
@@ -8,6 +10,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Objects;
 import javax.swing.*;
+import javax.swing.text.Utilities;
 
 public class Interface {
     public static final Color BACKGROUND_COLOR = new Color(15, 59, 94);
@@ -232,6 +235,47 @@ public class Interface {
     }
 
     private void deces() {
+        this.reset(275, 150);
+        JPanel panel = new JPanel();
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 20, 0, 20));
+        panel.setLayout(new GridLayout(3, 1));
+
+        JLabel title = Utilitaire.createTitle("Selectionner la personne décédée");
+        panel.add(title);
+
+        JComboBox<String> comboBox = Utilitaire.createComboBox(this.database);
+        panel.add(comboBox);
+
+        JPanel buttonsPanel = new JPanel();
+        JButton confirmButton = new JButton("Confirmer");
+        confirmButton.setForeground(new Color(46, 142, 95));
+        confirmButton.addActionListener(actionEvent -> {
+            int id = comboBox.getSelectedIndex();
+            Personne decedee = this.database.getPersonne(id);
+            if (decedee != null){
+                if (decedee.isDecedes()){
+                    Utilitaire.showError(this.frame, "Cette personne est deja décedée");
+                    return;
+                }
+                decedee.isDecedes();
+                if (decedee.getParents() != null) {
+                    Personne conjoint = decedee.getConjoint();
+                    conjoint.setConjoint(null);
+                }
+                JOptionPane.showMessageDialog(this.frame, "Décés de " + decedee+ decedee.getNomPrenom() + "enregsitré",
+                        "confirmation", JOptionPane.INFORMATION_MESSAGE);
+                this.menuPrincipal(false);
+            }else{
+                Utilitaire.showError(this.frame, "Cette personne n'existe pas");
+            }
+        });
+
+        buttonsPanel.add(this.backButton());
+        buttonsPanel.add(confirmButton);
+        panel.add(buttonsPanel);
+
+        this.frame.add(panel);
+        this.frame.pack();
 
     }
 
@@ -253,7 +297,22 @@ public class Interface {
             int id = comboBox.getSelectedIndex();
             Personne p = this.database.getPersonne(id);
             if (p != null) {
-                JOptionPane.showMessageDialog(this.frame, p.toString(),
+                String messageText = p.toString();
+
+                if (p.isDecedes()) {
+                    messageText += "\n\nStatut : Décédé(e)";
+                } else {
+                    messageText += "\n\nStatut : Vivant(e)";
+                    if (p.getConjoint() != null) {
+                        messageText += "\nMarié(e) avec : " + p.getConjoint().getNomPrenom();
+                    } else {
+                        if (p.isVeuf()) {
+                            messageText += "\nVeuf/Veuve";
+                        }
+                    }
+                }
+
+                JOptionPane.showMessageDialog(this.frame, messageText,
                         "État de la personne", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 Utilitaire.showError(this.frame, "Cette personne n'existe pas");
