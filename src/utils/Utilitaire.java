@@ -1,8 +1,15 @@
+package src.utils;
+
+import src.controllers.Database;
+import src.models.Personne;
+import src.views.Interface;
+
 import javax.swing.*;
+import java.awt.*;
 import java.util.Collection;
 import java.util.Iterator;
 
-public class Utilitaire {
+public abstract class Utilitaire {
     public static JLabel createTitle(String title) {
         JLabel label = new JLabel("<html><div style='text-align: center;font-weight: bold;'>" + title.toUpperCase() + "</div></html>");
         label.setHorizontalAlignment(JLabel.CENTER);
@@ -29,5 +36,12 @@ public class Utilitaire {
                 message,
                 "Erreur",
                 JOptionPane.ERROR_MESSAGE);
+    }
+
+    public static JButton backButton(Interface interfaceView) {
+        JButton button = new JButton("Retour");
+        button.setForeground(new Color(242, 140, 40));
+        button.addActionListener(actionEvent -> interfaceView.menuPrincipal(false));
+        return button;
     }
 }

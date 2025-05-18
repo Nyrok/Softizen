@@ -1,3 +1,10 @@
+package src.controllers;
+
+import src.enums.EtatCivil;
+import src.enums.Sexe;
+import src.models.Personne;
+import src.utils.Utilitaire;
+
 import javax.swing.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;

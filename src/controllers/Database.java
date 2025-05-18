@@ -1,3 +1,9 @@
+package src.controllers;
+
+import src.enums.EtatCivil;
+import src.enums.Sexe;
+import src.models.Personne;
+
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;

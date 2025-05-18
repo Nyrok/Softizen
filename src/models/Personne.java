@@ -1,7 +1,12 @@
+package src.models;
+
+import src.enums.EtatCivil;
+import src.enums.Sexe;
+
 import java.util.Date;
 import java.time.LocalDate;
 
-public class Personne {
+public final class Personne {
     private final Personne[] parents;
     private final String nom;
     private final String prenom;
