@@ -76,11 +76,9 @@ public final class Personne {
         this.etatCivil = EtatCivil.DECES;
     }
 
-    // Méthode pour obtenir la date de décès
     public LocalDate getDateDeces() {
         return dateDeces;
     }
-
 
     public void marier(Personne conjoint) {
         this.etatCivil = EtatCivil.MARIE;
