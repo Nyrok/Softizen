@@ -10,7 +10,6 @@ import java.util.Vector;
 
 public class Interface {
     JFrame frame;
-    Vector<String> buttonsTexts;
     Vector<Class<?>> buttonsActions;
 
     Database database;
@@ -25,31 +24,14 @@ public class Interface {
         this.frame.setResizable(false);
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        this.buttonsTexts = new Vector<>();
         this.buttonsActions = new Vector<>();
-
-        buttonsTexts.add("Mariage");
         buttonsActions.add(MariageView.class);
-
-        buttonsTexts.add("Divorce");
         buttonsActions.add(DivorceView.class);
-
-        buttonsTexts.add("Naissance");
         buttonsActions.add(NaissanceView.class);
-
-        buttonsTexts.add("Décès");
         buttonsActions.add(DecesView.class);
-
-        buttonsTexts.add("État d'une personne");
         buttonsActions.add(EtatPersonneView.class);
-
-        buttonsTexts.add("Affichage de la liste des personnes");
         buttonsActions.add(ListePersonnesView.class);
-
-        buttonsTexts.add("Saisie des personnes");
         buttonsActions.add(SaisiePersonneView.class);
-
-        buttonsTexts.add("Quitter le programme");
         buttonsActions.add(QuitView.class);
     }
 

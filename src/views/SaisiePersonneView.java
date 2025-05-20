@@ -8,8 +8,9 @@ import java.awt.*;
 import java.util.Objects;
 
 public final  class SaisiePersonneView extends ParentView {
-    public final int VIEW_WIDTH = 300;
-    public final int VIEW_HEIGHT =  250;
+    public static final int VIEW_WIDTH = 300;
+    public static final int VIEW_HEIGHT =  250;
+    public static final String BUTTON_TEXT = "Saisie d'une personne";
 
     public SaisiePersonneView(Interface interfaceView) {
         setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));

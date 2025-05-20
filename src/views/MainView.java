@@ -8,8 +8,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public final class MainView extends ParentView {
-    public final int VIEW_WIDTH = 300;
-    public final int VIEW_HEIGHT =  350;
+    public static final int VIEW_WIDTH = 300;
+    public static final int VIEW_HEIGHT = 350;
 
     Interface interfaceView;
 
@@ -20,7 +20,14 @@ public final class MainView extends ParentView {
         setLayout(new GridLayout(buttonsSize, 1));
         for (int i = 0; i < buttonsSize; i++) {
             Class<?> action = interfaceView.buttonsActions.get(i);
-            String text = interfaceView.buttonsTexts.get(i);
+            String text;
+            try {
+                Field buttonTextField = action.getDeclaredField("BUTTON_TEXT");
+                text = (String) buttonTextField.get(null);
+            } catch (IllegalAccessException | NoSuchFieldException e) {
+                System.err.println(e.getMessage());
+                return;
+            }
             buttons[i] = new JButton(text);
             buttons[i].setSize(interfaceView.frame.getWidth(), 20);
             buttons[i].setActionCommand(action.getName());
@@ -36,11 +43,11 @@ public final class MainView extends ParentView {
         try {
             Class<?> buttonClass = Class.forName(className);
             ParentView view = (ParentView) buttonClass.getDeclaredConstructor(Interface.class).newInstance(this.interfaceView);
-            Field widthField = buttonClass.getDeclaredField("VIEW_WIDTH");
-            Field heightField = buttonClass.getDeclaredField("VIEW_HEIGHT");
+            int width = buttonClass.getDeclaredField("VIEW_WIDTH").getInt(view);
+            int height = buttonClass.getDeclaredField("VIEW_HEIGHT").getInt(view);
             Method method = this.interfaceView.getClass().getDeclaredMethod("view", int.class, int.class, JPanel.class);
             method.setAccessible(true);
-            method.invoke(this.interfaceView, widthField.getInt(view), heightField.getInt(view), view);
+            method.invoke(this.interfaceView, width, height, view);
         } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | IllegalAccessException |
                  InstantiationException | NoSuchFieldException exception) {
             System.err.println(exception.getMessage());

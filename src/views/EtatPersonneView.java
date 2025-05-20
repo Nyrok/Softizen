@@ -8,8 +8,9 @@ import javax.swing.*;
 import java.awt.*;
 
 public final class EtatPersonneView extends ParentView {
-    public final int VIEW_WIDTH = 275;
-    public final int VIEW_HEIGHT =  150;
+    public static final int VIEW_WIDTH = 275;
+    public static final int VIEW_HEIGHT =  150;
+    public static final String BUTTON_TEXT = "État d'une personne";
 
     public EtatPersonneView(Interface interfaceView) {
         setBorder(BorderFactory.createEmptyBorder(10, 20, 0, 20));

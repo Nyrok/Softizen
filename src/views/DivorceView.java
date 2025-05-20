@@ -6,8 +6,9 @@ import javax.swing.*;
 import java.awt.*;
 
 public final class DivorceView extends ParentView {
-    public final int VIEW_WIDTH = 275;
-    public final int VIEW_HEIGHT = 150;
+    public static final int VIEW_WIDTH = 275;
+    public static final int VIEW_HEIGHT = 150;
+    public static final String BUTTON_TEXT = "Divorce";
 
     public DivorceView(Interface interfaceView) {
         setBorder(BorderFactory.createEmptyBorder(10, 20, 0, 20));

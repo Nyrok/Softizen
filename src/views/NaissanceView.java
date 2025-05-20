@@ -8,8 +8,9 @@ import java.awt.*;
 import java.util.Objects;
 
 public final class NaissanceView extends ParentView {
-    public final int VIEW_WIDTH = 300;
-    public final int VIEW_HEIGHT =  300;
+    public static final int VIEW_WIDTH = 300;
+    public static final int VIEW_HEIGHT =  300;
+    public static final String BUTTON_TEXT = "Naissance";
 
     public NaissanceView(Interface interfaceView) {
         setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
