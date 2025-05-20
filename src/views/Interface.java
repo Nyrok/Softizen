@@ -15,8 +15,8 @@ public class Interface {
     Provider provider;
     Mairie mairie;
 
-    public Interface(Provider db, Mairie mairie) {
-        this.provider = db;
+    public Interface(Provider provider, Mairie mairie) {
+        this.provider = provider;
         this.mairie = mairie;
         this.frame = new JFrame();
         this.frame.setTitle("Softizen");

@@ -12,8 +12,8 @@ import java.util.Date;
 public class Mairie {
     Provider provider;
 
-    public Mairie(Provider db) {
-        provider = db;
+    public Mairie(Provider provider) {
+        this.provider = provider;
     }
 
     public boolean mariage(JFrame frame, int id1, int id2) {
