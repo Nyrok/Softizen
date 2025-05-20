@@ -43,10 +43,10 @@ public class Interface {
         MainView view = new MainView(this);
         if (initialLaunch) {
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-            this.frame.setBounds((screenSize.width - view.VIEW_WIDTH) / 2,
-                    (screenSize.height - view.VIEW_HEIGHT) / 2, 0, 0);
+            this.frame.setBounds((screenSize.width - MainView.VIEW_WIDTH) / 2,
+                    (screenSize.height - MainView.VIEW_HEIGHT) / 2, 0, 0);
         }
-        this.view(view.VIEW_WIDTH, view.VIEW_HEIGHT, view);
+        this.view(MainView.VIEW_WIDTH, MainView.VIEW_HEIGHT, view);
     }
 
     private void reset(int width, int height) {
