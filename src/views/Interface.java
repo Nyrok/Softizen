@@ -5,12 +5,14 @@ import src.controllers.Mairie;
 
 import java.awt.*;
 import java.net.URL;
-import java.util.LinkedHashMap;
 import javax.swing.*;
+import java.util.Vector;
 
 public class Interface {
     JFrame frame;
-    LinkedHashMap<String, String> buttonsMap;
+    Vector<String> buttonsTexts;
+    Vector<Class<?>> buttonsActions;
+
     Database database;
     Mairie mairie;
 
@@ -22,15 +24,33 @@ public class Interface {
         this.frame.setVisible(true);
         this.frame.setResizable(false);
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.buttonsMap = new LinkedHashMap<>();
-        this.buttonsMap.put("mariage", "Mariage");
-        this.buttonsMap.put("divorce", "Divorce");
-        this.buttonsMap.put("naissance", "Naissance");
-        this.buttonsMap.put("deces", "Décès");
-        this.buttonsMap.put("etatPersonne", "État d'une personne");
-        this.buttonsMap.put("affichageListePersonnes", "Affichage de la liste des personnes");
-        this.buttonsMap.put("saisiePersonnes", "Saisie des personnes");
-        this.buttonsMap.put("quitterProgramme", "Quitter le programme");
+
+        this.buttonsTexts = new Vector<>();
+        this.buttonsActions = new Vector<>();
+
+        buttonsTexts.add("Mariage");
+        buttonsActions.add(MariageView.class);
+
+        buttonsTexts.add("Divorce");
+        buttonsActions.add(DivorceView.class);
+
+        buttonsTexts.add("Naissance");
+        buttonsActions.add(NaissanceView.class);
+
+        buttonsTexts.add("Décès");
+        buttonsActions.add(DecesView.class);
+
+        buttonsTexts.add("État d'une personne");
+        buttonsActions.add(EtatPersonneView.class);
+
+        buttonsTexts.add("Affichage de la liste des personnes");
+        buttonsActions.add(ListePersonnesView.class);
+
+        buttonsTexts.add("Saisie des personnes");
+        buttonsActions.add(SaisiePersonneView.class);
+
+        buttonsTexts.add("Quitter le programme");
+        buttonsActions.add(QuitView.class);
     }
 
     public void splashScreen() {
@@ -38,16 +58,13 @@ public class Interface {
     }
 
     public void menuPrincipal(boolean initialLaunch) {
-        int width = 300, height = 350;
+        MainView view = new MainView(this);
         if (initialLaunch) {
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-            this.frame.setBounds((screenSize.width - width) / 2,
-                    (screenSize.height - height) / 2, 0, 0);
+            this.frame.setBounds((screenSize.width - view.VIEW_WIDTH) / 2,
+                    (screenSize.height - view.VIEW_HEIGHT) / 2, 0, 0);
         }
-        this.reset(width, height);
-        JPanel view = new MainView(this);
-        this.frame.add(view);
-        this.frame.pack();
+        this.view(view.VIEW_WIDTH, view.VIEW_HEIGHT, view);
     }
 
     private void reset(int width, int height) {
@@ -66,57 +83,9 @@ public class Interface {
         this.frame.getContentPane().add(logo);
     }
 
-    private void mariage() {
-        this.reset(275, 200);
-        JPanel view = new MariageView(this);
+    private void view(int width, int height, JPanel view) {
+        this.reset(width, height);
         this.frame.add(view);
         this.frame.pack();
-    }
-
-    private void divorce() {
-        this.reset(275, 150);
-        JPanel view = new DivorceView(this);
-        this.frame.add(view);
-        this.frame.pack();
-    }
-
-    private void naissance() {
-        this.reset(300, 300);
-        JPanel view = new NaissanceView(this);
-        this.frame.add(view);
-        this.frame.pack();
-    }
-
-    private void deces() {
-        this.reset(275, 150);
-        JPanel view = new DecesView(this);
-        this.frame.add(view);
-        this.frame.pack();
-    }
-
-    private void etatPersonne() {
-        this.reset(275, 150);
-        JPanel view = new EtatPersonneView(this);
-        this.frame.add(view);
-        this.frame.pack();
-    }
-
-    private void affichageListePersonnes() {
-        this.reset(800, 400);
-        JPanel view = new ListePersonnesView(this);
-        this.frame.add(view);
-        this.frame.pack();
-    }
-
-    private void saisiePersonnes() {
-        this.reset(300, 250);
-        JPanel view = new SaisiePersonneView(this);
-        this.frame.add(view);
-        this.frame.pack();
-    }
-
-    private void quitterProgramme() {
-        this.database.save();
-        System.exit(0);
     }
 }

@@ -3,43 +3,46 @@ package src.views;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Iterator;
 
-public final class MainView extends JPanel {
+public final class MainView extends ParentView {
+    public final int VIEW_WIDTH = 300;
+    public final int VIEW_HEIGHT =  350;
+
     Interface interfaceView;
 
     public MainView(Interface interfaceView) {
         this.interfaceView = interfaceView;
-        int buttonsMapSize = interfaceView.buttonsMap.size();
-        JButton[] buttons = new JButton[buttonsMapSize];
-        setLayout(new GridLayout(buttonsMapSize, 1));
-        Iterator<String> keysIterator = interfaceView.buttonsMap.keySet().iterator();
-        Iterator<String> valuesIterator = interfaceView.buttonsMap.values().iterator();
-        int i = 0;
-        String key, value;
-        while (valuesIterator.hasNext()) {
-            key = keysIterator.next();
-            value = valuesIterator.next();
-            buttons[i] = new JButton(value);
+        int buttonsSize = interfaceView.buttonsActions.size();
+        JButton[] buttons = new JButton[buttonsSize];
+        setLayout(new GridLayout(buttonsSize, 1));
+        for (int i = 0; i < buttonsSize; i++) {
+            Class<?> action = interfaceView.buttonsActions.get(i);
+            String text = interfaceView.buttonsTexts.get(i);
+            buttons[i] = new JButton(text);
             buttons[i].setSize(interfaceView.frame.getWidth(), 20);
-            buttons[i].setActionCommand(key);
+            buttons[i].setActionCommand(action.getName());
             buttons[i].addActionListener(this::buttonCallback);
-            if (!valuesIterator.hasNext())
+            if (i == buttonsSize - 1)
                 buttons[i].setForeground(Color.RED);
             add(buttons[i]);
-            i++;
         }
     }
 
     private void buttonCallback(ActionEvent actionEvent) {
-        String methodName = actionEvent.getActionCommand();
+        String className = actionEvent.getActionCommand();
         try {
-            Method method = this.interfaceView.getClass().getDeclaredMethod(methodName);
+            Class<?> buttonClass = Class.forName(className);
+            ParentView view = (ParentView) buttonClass.getDeclaredConstructor(Interface.class).newInstance(this.interfaceView);
+            Field widthField = buttonClass.getDeclaredField("VIEW_WIDTH");
+            Field heightField = buttonClass.getDeclaredField("VIEW_HEIGHT");
+            Method method = this.interfaceView.getClass().getDeclaredMethod("view", int.class, int.class, JPanel.class);
             method.setAccessible(true);
-            method.invoke(this.interfaceView);
-        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException exception) {
+            method.invoke(this.interfaceView, widthField.getInt(view), heightField.getInt(view), view);
+        } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | IllegalAccessException |
+                 InstantiationException | NoSuchFieldException exception) {
             System.err.println(exception.getMessage());
         }
     }

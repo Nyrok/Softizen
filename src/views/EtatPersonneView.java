@@ -7,7 +7,10 @@ import src.utils.Utilitaire;
 import javax.swing.*;
 import java.awt.*;
 
-public final class EtatPersonneView extends JPanel {
+public final class EtatPersonneView extends ParentView {
+    public final int VIEW_WIDTH = 275;
+    public final int VIEW_HEIGHT =  150;
+
     public EtatPersonneView(Interface interfaceView) {
         setBorder(BorderFactory.createEmptyBorder(10, 20, 0, 20));
         setLayout(new GridLayout(3, 1));

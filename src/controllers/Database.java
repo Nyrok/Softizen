@@ -13,7 +13,7 @@ import java.text.SimpleDateFormat;
 public class Database {
     private final String DATABASE_FILE = "db.csv";
     public AtomicInteger lastId;
-    private final Map<Integer, Personne> personnes = new LinkedHashMap<>();
+    private final Vector<Personne> personnes = new Vector<>();
 
     public Database() {
         this.lastId = new AtomicInteger(0);
@@ -21,22 +21,25 @@ public class Database {
 
     public void ajouterPersonne(Personne p) {
         int id = lastId.incrementAndGet();
-        personnes.put(id, p);
         p.setId(id);
+        personnes.add(p);
     }
 
     public Personne getPersonne(int id) {
-        return personnes.get(id);
+        return personnes.stream()
+                .filter(p -> p.getId() == id)
+                .findFirst()
+                .orElse(null);
     }
 
     public Collection<Personne> listerPersonnes() {
-        return personnes.values();
+        return personnes;
     }
 
     public void save() {
         try (PrintWriter writer = new PrintWriter(DATABASE_FILE, StandardCharsets.UTF_8)) {
             writer.println("Nom,Prenom,DateNaissance,Sexe,EtatCivil,IDConjoint");
-            for (Personne p : personnes.values()) {
+            for (Personne p : personnes) {
                 writer.println(p.getNom() + "," +
                         p.getPrenom() + "," +
                         new SimpleDateFormat("dd/MM/yyyy").format(p.getDateNaissance()) + "," +
@@ -55,7 +58,7 @@ public class Database {
         try (BufferedReader reader = new BufferedReader(new FileReader(DATABASE_FILE, StandardCharsets.UTF_8))) {
             String line;
             reader.readLine();
-            personnes.clear();
+            personnes.removeAllElements();
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
                 if (parts.length == 6) {

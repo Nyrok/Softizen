@@ -7,7 +7,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Objects;
 
-public final class NaissanceView extends JPanel {
+public final class NaissanceView extends ParentView {
+    public final int VIEW_WIDTH = 300;
+    public final int VIEW_HEIGHT =  300;
+
     public NaissanceView(Interface interfaceView) {
         setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));

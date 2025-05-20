@@ -5,7 +5,10 @@ import src.utils.Utilitaire;
 import javax.swing.*;
 import java.awt.*;
 
-public final class DivorceView extends JPanel {
+public final class DivorceView extends ParentView {
+    public final int VIEW_WIDTH = 275;
+    public final int VIEW_HEIGHT = 150;
+
     public DivorceView(Interface interfaceView) {
         setBorder(BorderFactory.createEmptyBorder(10, 20, 0, 20));
         setLayout(new GridLayout(3, 1));

@@ -7,7 +7,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Objects;
 
-public final  class SaisiePersonneView extends JPanel {
+public final  class SaisiePersonneView extends ParentView {
+    public final int VIEW_WIDTH = 300;
+    public final int VIEW_HEIGHT =  250;
+
     public SaisiePersonneView(Interface interfaceView) {
         setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));

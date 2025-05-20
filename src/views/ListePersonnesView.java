@@ -8,7 +8,10 @@ import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 
-public final class ListePersonnesView extends JPanel {
+public final class ListePersonnesView extends ParentView {
+    public final int VIEW_WIDTH = 800;
+    public final int VIEW_HEIGHT =  400;
+
     public ListePersonnesView(Interface interfaceView) {
         setLayout(new BorderLayout());
         String[] columnNames = {"ID", "Nom", "Prénom", "Sexe", "Date de naissance", "Etat civil", "Conjoint", "Parent 1", "Parent 2"};
