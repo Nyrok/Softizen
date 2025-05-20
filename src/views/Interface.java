@@ -1,6 +1,6 @@
 package src.views;
 
-import src.controllers.Database;
+import src.controllers.Provider;
 import src.controllers.Mairie;
 
 import java.awt.*;
@@ -12,11 +12,11 @@ public class Interface {
     JFrame frame;
     Vector<Class<?>> buttonsActions;
 
-    Database database;
+    Provider provider;
     Mairie mairie;
 
-    public Interface(Database db, Mairie mairie) {
-        this.database = db;
+    public Interface(Provider db, Mairie mairie) {
+        this.provider = db;
         this.mairie = mairie;
         this.frame = new JFrame();
         this.frame.setTitle("Softizen");

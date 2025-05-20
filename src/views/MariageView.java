@@ -22,7 +22,7 @@ public final class MariageView extends ParentView {
         for (int i = 0; i < labels.length; i++) {
             labels[i] = new JLabel("Personne " + (i + 1) + " :");
             subPanel.add(labels[i]);
-            comboBoxes[i] = Utilitaire.createComboBox(interfaceView.database);
+            comboBoxes[i] = Utilitaire.createComboBox(interfaceView.provider);
             subPanel.add(comboBoxes[i]);
         }
         add(subPanel);

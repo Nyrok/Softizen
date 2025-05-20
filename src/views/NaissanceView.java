@@ -31,7 +31,7 @@ public final class NaissanceView extends ParentView {
 
         for (int i = 0; i < 2; i++) {
             parentsPanel.add(parentLabels[i]);
-            parentBoxes[i] = Utilitaire.createComboBox(interfaceView.database);
+            parentBoxes[i] = Utilitaire.createComboBox(interfaceView.provider);
             parentsPanel.add(parentBoxes[i]);
         }
         add(parentsPanel);

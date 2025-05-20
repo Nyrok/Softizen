@@ -19,14 +19,14 @@ public final class EtatPersonneView extends ParentView {
         JLabel title = Utilitaire.createTitle("Sélectionner une personne");
         add(title);
 
-        JComboBox<String> comboBox = Utilitaire.createComboBox(interfaceView.database);
+        JComboBox<String> comboBox = Utilitaire.createComboBox(interfaceView.provider);
         add(comboBox);
 
         JPanel buttonsPanel = new JPanel();
         JButton confirmButton = new JButton("Afficher");
         confirmButton.addActionListener(actionEvent -> {
             int id = comboBox.getSelectedIndex();
-            Personne p = interfaceView.database.getPersonne(id);
+            Personne p = interfaceView.provider.getPersonne(id);
             if (p != null) {
                 String messageText = p.toString();
 

@@ -17,7 +17,7 @@ public final class DecesView extends ParentView {
         JLabel title = Utilitaire.createTitle("Selectionner la personne décédée");
         add(title);
 
-        JComboBox<String> comboBox = Utilitaire.createComboBox(interfaceView.database);
+        JComboBox<String> comboBox = Utilitaire.createComboBox(interfaceView.provider);
         add(comboBox);
 
         JPanel buttonsPanel = new JPanel();

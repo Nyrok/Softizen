@@ -1,6 +1,6 @@
 package src.utils;
 
-import src.controllers.Database;
+import src.controllers.Provider;
 import src.models.Personne;
 import src.views.Interface;
 
@@ -17,8 +17,8 @@ public abstract class Utilitaire {
         return label;
     }
 
-    public static JComboBox<String> createComboBox(Database database) {
-        Collection<Personne> listPersonnes = database.listerPersonnes();
+    public static JComboBox<String> createComboBox(Provider provider) {
+        Collection<Personne> listPersonnes = provider.listerPersonnes();
         Iterator<Personne> listPersonnesI = listPersonnes.iterator();
         String[] options = new String[listPersonnes.size() + 1];
         options[0] = "--";

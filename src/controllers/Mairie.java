@@ -10,15 +10,15 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Mairie {
-    Database database;
+    Provider provider;
 
-    public Mairie(Database db) {
-        database = db;
+    public Mairie(Provider db) {
+        provider = db;
     }
 
     public boolean mariage(JFrame frame, int id1, int id2) {
-        Personne p1 = this.database.getPersonne(id1);
-        Personne p2 = this.database.getPersonne(id2);
+        Personne p1 = this.provider.getPersonne(id1);
+        Personne p2 = this.provider.getPersonne(id2);
 
         if (p1 == null || p2 == null) {
             Utilitaire.showError(frame, "L'une des 2 personnes n'existe pas !");
@@ -41,7 +41,7 @@ public class Mairie {
     }
 
     public boolean divorce(JFrame frame, int id) {
-        Personne p = this.database.getPersonne(id);
+        Personne p = this.provider.getPersonne(id);
         if (p == null) {
             Utilitaire.showError(frame, "Personne introuvable");
             return false;
@@ -59,7 +59,7 @@ public class Mairie {
     }
 
     public boolean deces(JFrame frame, int id) {
-        Personne p = this.database.getPersonne(id);
+        Personne p = this.provider.getPersonne(id);
         if (p == null) {
             Utilitaire.showError(frame, "La personne n'existe pas.");
             return false;
@@ -84,8 +84,8 @@ public class Mairie {
             parents[0] = null;
             parents[1] = null;
         } else {
-            Personne parent1 = this.database.getPersonne(idParent1);
-            Personne parent2 = this.database.getPersonne(idParent2);
+            Personne parent1 = this.provider.getPersonne(idParent1);
+            Personne parent2 = this.provider.getPersonne(idParent2);
 
             if (parent1 == null || parent2 == null) {
                 Utilitaire.showError(frame, "L'une des 2 personne n'existe pas");
@@ -119,8 +119,8 @@ public class Mairie {
             Utilitaire.showError(frame, "Format de date invalide. Utilisez JJ/MM/AAAA");
             return false;
         }
-        this.database.ajouterPersonne(p);
-        JOptionPane.showMessageDialog(frame, "ID: " + this.database.lastId, "Nouvelle naissance ajoutée", JOptionPane.INFORMATION_MESSAGE);
+        this.provider.ajouterPersonne(p);
+        JOptionPane.showMessageDialog(frame, "ID: " + this.provider.lastId, "Nouvelle naissance ajoutée", JOptionPane.INFORMATION_MESSAGE);
         return true;
     }
 }

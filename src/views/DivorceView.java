@@ -15,7 +15,7 @@ public final class DivorceView extends ParentView {
         setLayout(new GridLayout(3, 1));
         JLabel title = Utilitaire.createTitle("Sélectionner la personne à divorcer");
         add(title);
-        JComboBox<String> comboBox = Utilitaire.createComboBox(interfaceView.database);
+        JComboBox<String> comboBox = Utilitaire.createComboBox(interfaceView.provider);
         add(comboBox);
         JPanel buttonsPanel = new JPanel();
         JButton confirmButton = new JButton("Confirmer");

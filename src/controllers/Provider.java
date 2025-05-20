@@ -10,12 +10,12 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.text.SimpleDateFormat;
 
-public class Database {
-    private final String DATABASE_FILE = "db.csv";
+public class Provider {
+    private final String FILE = "db.csv";
     public AtomicInteger lastId;
     private final Vector<Personne> personnes = new Vector<>();
 
-    public Database() {
+    public Provider() {
         this.lastId = new AtomicInteger(0);
     }
 
@@ -37,7 +37,7 @@ public class Database {
     }
 
     public void save() {
-        try (PrintWriter writer = new PrintWriter(DATABASE_FILE, StandardCharsets.UTF_8)) {
+        try (PrintWriter writer = new PrintWriter(FILE, StandardCharsets.UTF_8)) {
             writer.println("Nom,Prenom,DateNaissance,Sexe,EtatCivil,IDConjoint");
             for (Personne p : personnes) {
                 writer.println(p.getNom() + "," +
@@ -56,7 +56,7 @@ public class Database {
     public void load() {
         Vector<Integer> mariagesP1 = new Vector<>();
         Vector<Integer> mariagesP2 = new Vector<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader(DATABASE_FILE, StandardCharsets.UTF_8))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE, StandardCharsets.UTF_8))) {
             String line;
             reader.readLine();
             personnes.removeAllElements();
