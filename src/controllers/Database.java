@@ -54,7 +54,8 @@ public class Database {
     }
 
     public void load() {
-        Map<Integer, Integer> mariages = new LinkedHashMap<>();
+        Vector<Integer> mariagesP1 = new Vector<>();
+        Vector<Integer> mariagesP2 = new Vector<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(DATABASE_FILE, StandardCharsets.UTF_8))) {
             String line;
             reader.readLine();
@@ -74,13 +75,14 @@ public class Database {
                     this.ajouterPersonne(p);
                     int conjointId = Integer.parseInt(parts[5]);
                     if (conjointId != -1) {
-                        mariages.put(p.getId(), Integer.parseInt(parts[5]));
+                        mariagesP1.add(p.getId());
+                        mariagesP2.add(Integer.parseInt(parts[5]));
                     }
                 }
             }
-            for (Map.Entry<Integer, Integer> m : mariages.entrySet()) {
-                Personne p1 = this.getPersonne(m.getKey());
-                Personne p2 = this.getPersonne(m.getValue());
+            for (int i = 0; i < mariagesP1.size(); i++) {
+                Personne p1 = this.getPersonne(mariagesP1.get(i));
+                Personne p2 = this.getPersonne(mariagesP2.get(i));
                 if (p1 != null && p2 != null) {
                     p1.setConjoint(p2);
                 }
