@@ -32,7 +32,7 @@ public class Provider {
                 .orElse(null);
     }
 
-    public Collection<Personne> listerPersonnes() {
+    public Collection<Personne> getPersonnes() {
         return personnes;
     }
 

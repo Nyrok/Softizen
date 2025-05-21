@@ -18,7 +18,7 @@ public abstract class Utilitaire {
     }
 
     public static JComboBox<String> createComboBox(Provider provider) {
-        Collection<Personne> listPersonnes = provider.listerPersonnes();
+        Collection<Personne> listPersonnes = provider.getPersonnes();
         Iterator<Personne> listPersonnesI = listPersonnes.iterator();
         String[] options = new String[listPersonnes.size() + 1];
         options[0] = "--";

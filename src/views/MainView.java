@@ -46,7 +46,6 @@ public final class MainView extends ParentView {
             int width = buttonClass.getDeclaredField("VIEW_WIDTH").getInt(view);
             int height = buttonClass.getDeclaredField("VIEW_HEIGHT").getInt(view);
             Method method = this.interfaceView.getClass().getDeclaredMethod("view", int.class, int.class, JPanel.class);
-            method.setAccessible(true);
             method.invoke(this.interfaceView, width, height, view);
         } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | IllegalAccessException |
                  InstantiationException | NoSuchFieldException exception) {

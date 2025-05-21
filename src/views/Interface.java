@@ -65,7 +65,7 @@ public class Interface {
         this.frame.getContentPane().add(logo);
     }
 
-    private void view(int width, int height, JPanel view) {
+    public void view(int width, int height, JPanel view) {
         this.reset(width, height);
         this.frame.add(view);
         this.frame.pack();
