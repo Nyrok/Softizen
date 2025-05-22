@@ -33,6 +33,8 @@ public class Interface {
         buttonsActions.add(ListePersonnesView.class);
         buttonsActions.add(SaisiePersonneView.class);
         buttonsActions.add(QuitView.class);
+
+        mairie.setInterfaceView(this);
     }
 
     public void splashScreen() {

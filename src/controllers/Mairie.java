@@ -4,16 +4,27 @@ import src.enums.EtatCivil;
 import src.enums.Sexe;
 import src.models.Personne;
 import src.utils.Utilitaire;
+import src.views.Interface;
+import src.views.ParentView;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Mairie {
     Provider provider;
+    Interface interfaceView;
 
     public Mairie(Provider provider) {
         this.provider = provider;
+        this.interfaceView = null;
+    }
+
+    public void setInterfaceView(Interface interfaceView) {
+        this.interfaceView = interfaceView;
     }
 
     public boolean mariage(JFrame frame, int id1, int id2) {
@@ -122,5 +133,20 @@ public class Mairie {
         this.provider.ajouterPersonne(p);
         JOptionPane.showMessageDialog(frame, "ID: " + this.provider.lastId, "Nouvelle naissance ajoutée", JOptionPane.INFORMATION_MESSAGE);
         return true;
+    }
+
+    public void buttonCallback(ActionEvent actionEvent) {
+        String className = actionEvent.getActionCommand();
+        try {
+            Class<?> buttonClass = Class.forName(className);
+            ParentView view = (ParentView) buttonClass.getDeclaredConstructor(Interface.class).newInstance(this.interfaceView);
+            int width = buttonClass.getDeclaredField("VIEW_WIDTH").getInt(view);
+            int height = buttonClass.getDeclaredField("VIEW_HEIGHT").getInt(view);
+            Method method = this.interfaceView.getClass().getDeclaredMethod("view", int.class, int.class, JPanel.class);
+            method.invoke(this.interfaceView, width, height, view);
+        } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | IllegalAccessException |
+                 InstantiationException | NoSuchFieldException exception) {
+            System.err.println(exception.getMessage());
+        }
     }
 }
