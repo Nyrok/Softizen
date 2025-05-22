@@ -1,5 +1,6 @@
 package src.views;
 
+import src.controllers.InterfaceController;
 import src.models.Personne;
 import src.utils.Utilitaire;
 
@@ -13,10 +14,10 @@ public final class ListePersonnesView extends ParentView {
     public static final int VIEW_HEIGHT =  400;
     public static final String BUTTON_TEXT = "Affichage de la liste des personnes";
 
-    public ListePersonnesView(Interface interfaceView) {
+    public ListePersonnesView(InterfaceController interfaceController) {
         setLayout(new BorderLayout());
         String[] columnNames = {"ID", "Nom", "Prénom", "Sexe", "Date de naissance", "Etat civil", "Conjoint", "Parent 1", "Parent 2"};
-        Collection<Personne> personnes = interfaceView.provider.getPersonnes();
+        Collection<Personne> personnes = interfaceController.mairie.provider.getPersonnes();
         Object[][] data = new Object[personnes.size()][9];
 
         int i = 0;
@@ -45,7 +46,7 @@ public final class ListePersonnesView extends ParentView {
         add(scrollPane, BorderLayout.CENTER);
 
         JPanel buttonsPanel = new JPanel();
-        buttonsPanel.add(Utilitaire.backButton(interfaceView));
+        buttonsPanel.add(Utilitaire.backButton(interfaceController));
         add(buttonsPanel, BorderLayout.SOUTH);
     }
 }

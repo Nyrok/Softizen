@@ -1,11 +1,13 @@
 package src.views;
 
+import src.controllers.InterfaceController;
+
 import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
 
 public final class SplashWindow extends JWindow {
-    public SplashWindow(Interface interfaceView) {
+    public SplashWindow(InterfaceController interfaceController) {
         URL iconURL = this.getClass().getResource("/splash.png");
         if (iconURL == null)
             throw new IllegalArgumentException("Splash file is missing.");
@@ -28,6 +30,6 @@ public final class SplashWindow extends JWindow {
         }
         setVisible(false);
         dispose();
-        interfaceView.menuPrincipal(true);
+        interfaceController.menuPrincipal(true);
     }
 }

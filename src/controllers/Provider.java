@@ -10,7 +10,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.text.SimpleDateFormat;
 
-public class Provider {
+public final class Provider {
     private final String FILE = "data.csv";
     public AtomicInteger lastId;
     private final Vector<Personne> personnes = new Vector<>();

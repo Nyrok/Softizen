@@ -1,5 +1,6 @@
 package src.views;
 
+import src.controllers.InterfaceController;
 import src.enums.EtatCivil;
 import src.models.Personne;
 import src.utils.Utilitaire;
@@ -12,21 +13,21 @@ public final class EtatPersonneView extends ParentView {
     public static final int VIEW_HEIGHT =  150;
     public static final String BUTTON_TEXT = "État d'une personne";
 
-    public EtatPersonneView(Interface interfaceView) {
+    public EtatPersonneView(InterfaceController interfaceController) {
         setBorder(BorderFactory.createEmptyBorder(10, 20, 0, 20));
         setLayout(new GridLayout(3, 1));
 
         JLabel title = Utilitaire.createTitle("Sélectionner une personne");
         add(title);
 
-        JComboBox<String> comboBox = Utilitaire.createComboBox(interfaceView.provider);
+        JComboBox<String> comboBox = Utilitaire.createComboBox(interfaceController.mairie.provider);
         add(comboBox);
 
         JPanel buttonsPanel = new JPanel();
         JButton confirmButton = new JButton("Afficher");
         confirmButton.addActionListener(actionEvent -> {
             int id = comboBox.getSelectedIndex();
-            Personne p = interfaceView.provider.getPersonne(id);
+            Personne p = interfaceController.mairie.provider.getPersonne(id);
             if (p != null) {
                 String messageText = p.toString();
 
@@ -43,13 +44,13 @@ public final class EtatPersonneView extends ParentView {
                     }
                 }
 
-                JOptionPane.showMessageDialog(interfaceView.frame, messageText,
+                JOptionPane.showMessageDialog(interfaceController.frame, messageText,
                         "État de la personne", JOptionPane.INFORMATION_MESSAGE);
             } else {
-                Utilitaire.showError(interfaceView.frame, "Cette personne n'existe pas");
+                Utilitaire.showError(interfaceController.frame, "Cette personne n'existe pas");
             }
         });
-        buttonsPanel.add(Utilitaire.backButton(interfaceView));
+        buttonsPanel.add(Utilitaire.backButton(interfaceController));
         buttonsPanel.add(confirmButton);
         add(buttonsPanel);
     }

@@ -1,161 +1,61 @@
 package src.controllers;
 
-import src.enums.EtatCivil;
-import src.enums.Sexe;
-import src.models.Personne;
-import src.utils.Utilitaire;
-import src.views.Interface;
-import src.views.ParentView;
+import src.views.*;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.time.temporal.ChronoUnit;
 
 public class Mairie {
-    Provider provider;
-    Interface interfaceView;
+    public Provider provider;
+    InterfaceController interfaceController;
+    MariageController mariageController;
+    DivorceController divorceController;
+    DecesController decesController;
+    NaissanceController naissanceController;
 
     public Mairie(Provider provider) {
         this.provider = provider;
-        this.interfaceView = null;
+        this.mariageController = new MariageController(provider);
+        this.divorceController = new DivorceController(provider);
+        this.decesController = new DecesController(provider);
+        this.naissanceController = new NaissanceController(provider);
+        this.interfaceController = null;
     }
 
-    public void setInterfaceView(Interface interfaceView) {
-        this.interfaceView = interfaceView;
+    public MariageController getMariageController() {
+        return mariageController;
     }
 
-    public boolean mariage(JFrame frame, int id1, int id2) {
-        Personne p1 = this.provider.getPersonne(id1);
-        Personne p2 = this.provider.getPersonne(id2);
-
-        if (p1 == null || p2 == null) {
-            Utilitaire.showError(frame, "L'une des 2 personnes n'existe pas !");
-            return false;
-        }
-
-        if (id1 == id2) {
-            Utilitaire.showError(frame, "Vous devez marier deux personnes différentes !");
-            return false;
-        }
-
-        if (p1.getEtatCivil() == EtatCivil.DECES || p2.getEtatCivil() == EtatCivil.DECES) {
-            Utilitaire.showError(frame, "Vous ne pouvez pas marier une personne décédée.");
-            return false;
-        }
-        if (p1.getEtatCivil() == EtatCivil.MARIE || p2.getEtatCivil() == EtatCivil.MARIE) {
-            Utilitaire.showError(frame, "L'une des personnes est déjà mariée !");
-            return false;
-        }
-
-        int currentYear = new Date().getYear();
-        int age1 = currentYear - p1.getDateNaissance().getYear();
-        int age2 = currentYear - p2.getDateNaissance().getYear();
-
-        if (age1 < 18 || age2 < 18) {
-            Utilitaire.showError(frame, "Les deux personnes doivent avoir au moins 18 ans !");
-            return false;
-        }
-
-        p1.marier(p2);
-        p2.marier(p1);
-        JOptionPane.showMessageDialog(frame, "Mariage enregistré avec succès !");
-        return true;
+    public DivorceController getDivorceController() {
+        return divorceController;
     }
 
-    public boolean divorce(JFrame frame, int id) {
-        Personne p = this.provider.getPersonne(id);
-        if (p == null) {
-            Utilitaire.showError(frame, "Personne introuvable");
-            return false;
-        }
-        if (p.getEtatCivil() == EtatCivil.DECES) {
-            Utilitaire.showError(frame, "Cette personne est décédée.");
-            return false;
-        }
-        if (p.getEtatCivil() != EtatCivil.MARIE || p.getConjoint() == null) {
-            Utilitaire.showError(frame, "La personne n'est pas mariée");
-            return false;
-        }
-
-        Personne conjoint = p.getConjoint();
-        p.divorcer();
-        conjoint.divorcer();
-        JOptionPane.showMessageDialog(frame, "Divorce enregistré avec succès !");
-        return true;
+    public DecesController getDecesController() {
+        return decesController;
     }
 
-    public boolean deces(JFrame frame, int id) {
-        Personne p = this.provider.getPersonne(id);
-        if (p == null) {
-            Utilitaire.showError(frame, "La personne n'existe pas.");
-            return false;
-        }
-        if (p.getEtatCivil() == EtatCivil.DECES) {
-            Utilitaire.showError(frame, "Cette personne est deja décedée");
-            return false;
-        }
-        if (p.getEtatCivil() == EtatCivil.MARIE) {
-            Personne conjoint = p.getConjoint();
-            conjoint.setConjoint(null);
-            conjoint.setEtatCivil(EtatCivil.VEUF);
-        }
-        p.deces();
-        JOptionPane.showMessageDialog(frame, "Décès enregistré avec succès !");
-        return true;
+    public NaissanceController getNaissanceController() {
+        return naissanceController;
     }
 
-    public boolean naissance(JFrame frame, int idParent1, int idParent2, Sexe sexe, JTextField[] textFields) {
-        Personne[] parents = new Personne[2];
-        if (idParent1 == -1 && idParent2 == -1) {
-            parents[0] = null;
-            parents[1] = null;
-        } else {
-            Personne parent1 = this.provider.getPersonne(idParent1);
-            Personne parent2 = this.provider.getPersonne(idParent2);
+    public void launchInterface() {
+        InterfaceController interfaceController = new InterfaceController(this);
+        setInterfaceController(interfaceController);
+        interfaceController.splashScreen();
+    }
 
-            if (parent1 == null || parent2 == null) {
-                Utilitaire.showError(frame, "L'une des 2 personne n'existe pas");
-                return false;
-            }
-
-            if (idParent1 == idParent2) {
-                Utilitaire.showError(frame, "Vous devez déclarer deux parents différents");
-                return false;
-            }
-
-            parents[0] = parent1;
-            parents[1] = parent2;
-        }
-
-        String nom = textFields[0].getText();
-        String prenom = textFields[1].getText();
-        String dateNaissance = textFields[2].getText();
-
-        if (nom.isEmpty() || prenom.isEmpty() || dateNaissance.isEmpty()) {
-            Utilitaire.showError(frame, "Veuillez remplir tous les champs");
-            return false;
-        }
-
-        Personne p;
-        try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-            Date date = dateFormat.parse(dateNaissance);
-            if (date.after(new Date())) {
-                Utilitaire.showError(frame, "Vous ne pouvez pas déclarer de naissance après aujourd'hui !");
-                return false;
-            }
-            p = new Personne(parents, nom, prenom, date, sexe);
-        } catch (Exception e) {
-            Utilitaire.showError(frame, "Format de date invalide. Utilisez JJ/MM/AAAA");
-            return false;
-        }
-        this.provider.ajouterPersonne(p);
-        JOptionPane.showMessageDialog(frame, "ID: " + this.provider.lastId, "Nouvelle naissance ajoutée", JOptionPane.INFORMATION_MESSAGE);
-        return true;
+    public void setInterfaceController(InterfaceController interfaceController) {
+        this.interfaceController = interfaceController;
+        this.interfaceController.addButtonAction(MariageView.class);
+        this.interfaceController.addButtonAction(DivorceView.class);
+        this.interfaceController.addButtonAction(NaissanceView.class);
+        this.interfaceController.addButtonAction(DecesView.class);
+        this.interfaceController.addButtonAction(EtatPersonneView.class);
+        this.interfaceController.addButtonAction(ListePersonnesView.class);
+        this.interfaceController.addButtonAction(SaisiePersonneView.class);
+        this.interfaceController.addButtonAction(QuitView.class);
     }
 
     public void setButtonCallback(JButton button) {
@@ -166,11 +66,14 @@ public class Mairie {
         String className = actionEvent.getActionCommand();
         try {
             Class<?> buttonClass = Class.forName(className);
-            ParentView view = (ParentView) buttonClass.getDeclaredConstructor(Interface.class).newInstance(this.interfaceView);
+            ParentView view = (ParentView) buttonClass
+                    .getDeclaredConstructor(InterfaceController.class)
+                    .newInstance(this.interfaceController);
             int width = buttonClass.getDeclaredField("VIEW_WIDTH").getInt(view);
             int height = buttonClass.getDeclaredField("VIEW_HEIGHT").getInt(view);
-            Method method = this.interfaceView.getClass().getDeclaredMethod("view", int.class, int.class, JPanel.class);
-            method.invoke(this.interfaceView, width, height, view);
+            Method method = this.interfaceController.getClass()
+                    .getDeclaredMethod("view", int.class, int.class, JPanel.class);
+            method.invoke(this.interfaceController, width, height, view);
         } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | IllegalAccessException |
                  InstantiationException | NoSuchFieldException exception) {
             System.err.println(exception.getMessage());

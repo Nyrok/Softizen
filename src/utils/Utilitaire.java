@@ -1,8 +1,8 @@
 package src.utils;
 
+import src.controllers.InterfaceController;
 import src.controllers.Provider;
 import src.models.Personne;
-import src.views.Interface;
 
 import javax.swing.*;
 import java.awt.*;
@@ -38,7 +38,7 @@ public abstract class Utilitaire {
                 JOptionPane.ERROR_MESSAGE);
     }
 
-    public static JButton backButton(Interface interfaceView) {
+    public static JButton backButton(InterfaceController interfaceView) {
         JButton button = new JButton("Retour");
         button.setForeground(new Color(242, 140, 40));
         button.addActionListener(actionEvent -> interfaceView.menuPrincipal(false));

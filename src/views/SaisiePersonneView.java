@@ -1,5 +1,6 @@
 package src.views;
 
+import src.controllers.InterfaceController;
 import src.enums.Sexe;
 import src.utils.Utilitaire;
 
@@ -12,7 +13,7 @@ public final  class SaisiePersonneView extends ParentView {
     public static final int VIEW_HEIGHT =  250;
     public static final String BUTTON_TEXT = "Saisie d'une personne";
 
-    public SaisiePersonneView(Interface interfaceView) {
+    public SaisiePersonneView(InterfaceController interfaceController) {
         setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
@@ -43,11 +44,11 @@ public final  class SaisiePersonneView extends ParentView {
         confirmButton.setForeground(new Color(46, 142, 95));
         confirmButton.addActionListener(actionEvent -> {
             Sexe sexe = (Sexe) Objects.requireNonNull(sexeBox.getSelectedItem());
-            if (interfaceView.mairie.naissance(interfaceView.frame, -1, -1, sexe, textFields))
-                interfaceView.menuPrincipal(false);
+            if (interfaceController.mairie.getNaissanceController().naissance(interfaceController.frame, -1, -1, sexe, textFields))
+                interfaceController.menuPrincipal(false);
         });
 
-        buttonsPanel.add(Utilitaire.backButton(interfaceView));
+        buttonsPanel.add(Utilitaire.backButton(interfaceController));
         buttonsPanel.add(confirmButton);
         add(buttonsPanel);
     }

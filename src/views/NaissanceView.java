@@ -1,5 +1,6 @@
 package src.views;
 
+import src.controllers.InterfaceController;
 import src.enums.Sexe;
 import src.utils.Utilitaire;
 
@@ -12,7 +13,7 @@ public final class NaissanceView extends ParentView {
     public static final int VIEW_HEIGHT =  300;
     public static final String BUTTON_TEXT = "Naissance";
 
-    public NaissanceView(Interface interfaceView) {
+    public NaissanceView(InterfaceController interfaceController) {
         setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
@@ -31,7 +32,7 @@ public final class NaissanceView extends ParentView {
 
         for (int i = 0; i < 2; i++) {
             parentsPanel.add(parentLabels[i]);
-            parentBoxes[i] = Utilitaire.createComboBox(interfaceView.provider);
+            parentBoxes[i] = Utilitaire.createComboBox(interfaceController.mairie.provider);
             parentsPanel.add(parentBoxes[i]);
         }
         add(parentsPanel);
@@ -57,11 +58,11 @@ public final class NaissanceView extends ParentView {
             int idP1 = parentBoxes[0].getSelectedIndex();
             int idP2 = parentBoxes[1].getSelectedIndex();
 
-            if (interfaceView.mairie.naissance(interfaceView.frame, idP1, idP2, sexe, textFields))
-                interfaceView.menuPrincipal(false);
+            if (interfaceController.mairie.getNaissanceController().naissance(interfaceController.frame, idP1, idP2, sexe, textFields))
+                interfaceController.menuPrincipal(false);
         });
 
-        buttonsPanel.add(Utilitaire.backButton(interfaceView));
+        buttonsPanel.add(Utilitaire.backButton(interfaceController));
         buttonsPanel.add(confirmButton);
         add(buttonsPanel);
     }

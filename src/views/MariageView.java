@@ -1,5 +1,6 @@
 package src.views;
 
+import src.controllers.InterfaceController;
 import src.utils.Utilitaire;
 
 import javax.swing.*;
@@ -10,7 +11,7 @@ public final class MariageView extends ParentView {
     public static final int VIEW_HEIGHT =  200;
     public static final String BUTTON_TEXT = "Mariage";
 
-    public MariageView(Interface interfaceView) {
+    public MariageView(InterfaceController interfaceController) {
         setBorder(BorderFactory.createEmptyBorder(10, 20, 0, 20));
         setLayout(new GridLayout(3, 1));
         JLabel title = Utilitaire.createTitle("Sélectionner les personnes à marier");
@@ -22,7 +23,7 @@ public final class MariageView extends ParentView {
         for (int i = 0; i < labels.length; i++) {
             labels[i] = new JLabel("Personne " + (i + 1) + " :");
             subPanel.add(labels[i]);
-            comboBoxes[i] = Utilitaire.createComboBox(interfaceView.provider);
+            comboBoxes[i] = Utilitaire.createComboBox(interfaceController.mairie.provider);
             subPanel.add(comboBoxes[i]);
         }
         add(subPanel);
@@ -32,10 +33,10 @@ public final class MariageView extends ParentView {
         confirmButton.addActionListener(actionEvent -> {
             int idP1 = comboBoxes[0].getSelectedIndex();
             int idP2 = comboBoxes[1].getSelectedIndex();
-            if (interfaceView.mairie.mariage(interfaceView.frame, idP1, idP2))
-                interfaceView.menuPrincipal(false);
+            if (interfaceController.mairie.getMariageController().mariage(interfaceController.frame, idP1, idP2))
+                interfaceController.menuPrincipal(false);
         });
-        buttonsPanel.add(Utilitaire.backButton(interfaceView));
+        buttonsPanel.add(Utilitaire.backButton(interfaceController));
         buttonsPanel.add(confirmButton);
         add(buttonsPanel);
     }

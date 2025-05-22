@@ -1,22 +1,19 @@
-package src.views;
+package src.controllers;
 
-import src.controllers.Provider;
-import src.controllers.Mairie;
+import src.views.MainView;
+import src.views.SplashWindow;
 
+import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
-import javax.swing.*;
 import java.util.Vector;
 
-public class Interface {
-    JFrame frame;
-    Vector<Class<?>> buttonsActions;
+public final class InterfaceController {
+    public JFrame frame;
+    public Vector<Class<?>> buttonsActions;
+    public Mairie mairie;
 
-    Provider provider;
-    Mairie mairie;
-
-    public Interface(Provider provider, Mairie mairie) {
-        this.provider = provider;
+    public InterfaceController(Mairie mairie) {
         this.mairie = mairie;
         this.frame = new JFrame();
         this.frame.setTitle("Softizen");
@@ -25,16 +22,10 @@ public class Interface {
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         this.buttonsActions = new Vector<>();
-        buttonsActions.add(MariageView.class);
-        buttonsActions.add(DivorceView.class);
-        buttonsActions.add(NaissanceView.class);
-        buttonsActions.add(DecesView.class);
-        buttonsActions.add(EtatPersonneView.class);
-        buttonsActions.add(ListePersonnesView.class);
-        buttonsActions.add(SaisiePersonneView.class);
-        buttonsActions.add(QuitView.class);
+    }
 
-        mairie.setInterfaceView(this);
+    public void addButtonAction(Class<?> action) {
+        buttonsActions.add(action);
     }
 
     public void splashScreen() {
