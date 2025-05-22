@@ -28,7 +28,7 @@ public final class MainView extends ParentView {
             buttons[i] = new JButton(text);
             buttons[i].setSize(interfaceView.frame.getWidth(), 20);
             buttons[i].setActionCommand(action.getName());
-            buttons[i].addActionListener(this.interfaceView.mairie::buttonCallback);
+            this.interfaceView.mairie.setButtonCallback(buttons[i]);
             if (i == buttonsSize - 1)
                 buttons[i].setForeground(Color.RED);
             add(buttons[i]);

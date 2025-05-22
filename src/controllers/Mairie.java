@@ -135,7 +135,11 @@ public class Mairie {
         return true;
     }
 
-    public void buttonCallback(ActionEvent actionEvent) {
+    public void setButtonCallback(JButton button) {
+        button.addActionListener(this::buttonCallback);
+    }
+
+    private void buttonCallback(ActionEvent actionEvent) {
         String className = actionEvent.getActionCommand();
         try {
             Class<?> buttonClass = Class.forName(className);
