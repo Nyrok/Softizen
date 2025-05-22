@@ -13,6 +13,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.time.temporal.ChronoUnit;
 
 public class Mairie {
     Provider provider;
@@ -41,10 +42,24 @@ public class Mairie {
             return false;
         }
 
+        if (p1.getEtatCivil() == EtatCivil.DECES || p2.getEtatCivil() == EtatCivil.DECES) {
+            Utilitaire.showError(frame, "Vous ne pouvez pas marier une personne décédée.");
+            return false;
+        }
         if (p1.getEtatCivil() == EtatCivil.MARIE || p2.getEtatCivil() == EtatCivil.MARIE) {
             Utilitaire.showError(frame, "L'une des personnes est déjà mariée !");
             return false;
         }
+
+        int currentYear = new Date().getYear();
+        int age1 = currentYear - p1.getDateNaissance().getYear();
+        int age2 = currentYear - p2.getDateNaissance().getYear();
+
+        if (age1 < 18 || age2 < 18) {
+            Utilitaire.showError(frame, "Les deux personnes doivent avoir au moins 18 ans !");
+            return false;
+        }
+
         p1.marier(p2);
         p2.marier(p1);
         JOptionPane.showMessageDialog(frame, "Mariage enregistré avec succès !");
@@ -55,6 +70,10 @@ public class Mairie {
         Personne p = this.provider.getPersonne(id);
         if (p == null) {
             Utilitaire.showError(frame, "Personne introuvable");
+            return false;
+        }
+        if (p.getEtatCivil() == EtatCivil.DECES) {
+            Utilitaire.showError(frame, "Cette personne est décédée.");
             return false;
         }
         if (p.getEtatCivil() != EtatCivil.MARIE || p.getConjoint() == null) {
@@ -125,6 +144,10 @@ public class Mairie {
         try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
             Date date = dateFormat.parse(dateNaissance);
+            if (date.after(new Date())) {
+                Utilitaire.showError(frame, "Vous ne pouvez pas déclarer de naissance après aujourd'hui !");
+                return false;
+            }
             p = new Personne(parents, nom, prenom, date, sexe);
         } catch (Exception e) {
             Utilitaire.showError(frame, "Format de date invalide. Utilisez JJ/MM/AAAA");
