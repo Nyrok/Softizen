@@ -61,7 +61,7 @@ public final class NaissanceController {
             return false;
         }
         this.mairie.getProvider().addPersonne(p);
-        JOptionPane.showMessageDialog(frame, "ID: " + this.mairie.getProvider().lastId, "Nouvelle naissance ajoutée", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(frame, "ID: " + this.mairie.getProvider().getLastId(), "Nouvelle naissance ajoutée", JOptionPane.INFORMATION_MESSAGE);
         return true;
     }
 }

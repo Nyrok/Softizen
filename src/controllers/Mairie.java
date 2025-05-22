@@ -14,6 +14,7 @@ public class Mairie {
     private final DivorceController divorceController;
     private final DecesController decesController;
     private final NaissanceController naissanceController;
+    private final EtatPersonneController etatPersonneController;
 
     public Mairie() {
         this.provider = new Provider();
@@ -22,6 +23,7 @@ public class Mairie {
         this.divorceController = new DivorceController(this);
         this.decesController = new DecesController(this);
         this.naissanceController = new NaissanceController(this);
+        this.etatPersonneController = new EtatPersonneController(this);
         this.interfaceController = null;
     }
 
@@ -39,6 +41,10 @@ public class Mairie {
 
     public NaissanceController getNaissanceController() {
         return naissanceController;
+    }
+
+    public EtatPersonneController getEtatPersonneController() {
+        return etatPersonneController;
     }
 
     public InterfaceController getInterfaceController() {

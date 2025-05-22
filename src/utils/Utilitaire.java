@@ -28,7 +28,7 @@ public abstract class Utilitaire {
             options[i] = personne.getNomPrenom() + " (" + i + ")";
             i++;
         }
-        return new JComboBox<String>(options);
+        return new JComboBox<>(options);
     }
 
     public static void showError(JFrame frame, String message) {

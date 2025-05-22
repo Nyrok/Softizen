@@ -12,7 +12,7 @@ import java.text.SimpleDateFormat;
 
 public final class Provider {
     private final String FILE = "data.csv";
-    public AtomicInteger lastId;
+    private final AtomicInteger lastId;
     private final Vector<Personne> personnes = new Vector<>();
 
     public Provider() {
@@ -23,6 +23,10 @@ public final class Provider {
         int id = lastId.incrementAndGet();
         p.setId(id);
         personnes.add(p);
+    }
+
+    public int getLastId() {
+        return lastId.intValue();
     }
 
     public Personne getPersonne(int id) {

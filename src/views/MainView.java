@@ -10,10 +10,7 @@ public final class MainView extends ParentView {
     public static final int VIEW_WIDTH = 300;
     public static final int VIEW_HEIGHT = 350;
 
-    InterfaceController interfaceController;
-
     public MainView(InterfaceController interfaceController) {
-        this.interfaceController = interfaceController;
         int buttonsSize = interfaceController.getButtonsActions().size();
         JButton[] buttons = new JButton[buttonsSize];
         setLayout(new GridLayout(buttonsSize, 1));
@@ -30,7 +27,7 @@ public final class MainView extends ParentView {
             buttons[i] = new JButton(text);
             buttons[i].setSize(interfaceController.getFrame().getWidth(), 20);
             buttons[i].setActionCommand(action.getName());
-            this.interfaceController.getMairie().setButtonCallback(buttons[i]);
+            interfaceController.getMairie().setButtonCallback(buttons[i]);
             if (i == buttonsSize - 1)
                 buttons[i].setForeground(Color.RED);
             add(buttons[i]);
