@@ -7,13 +7,14 @@ import src.utils.Utilitaire;
 import javax.swing.*;
 
 public final class DivorceController {
-    Provider provider;
-    public DivorceController(Provider provider) {
-        this.provider = provider;
+    Mairie mairie;
+
+    public DivorceController(Mairie mairie) {
+        this.mairie = mairie;
     }
 
     public boolean divorce(JFrame frame, int id) {
-        Personne p = this.provider.getPersonne(id);
+        Personne p = this.mairie.provider.getPersonne(id);
         if (p == null) {
             Utilitaire.showError(frame, "Personne introuvable");
             return false;

@@ -9,10 +9,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public final class NaissanceController {
-    Provider provider;
+    Mairie mairie;
 
-    public NaissanceController(Provider provider) {
-        this.provider = provider;
+    public NaissanceController(Mairie mairie) {
+        this.mairie = mairie;
     }
 
     public boolean naissance(JFrame frame, int idParent1, int idParent2, Sexe sexe, JTextField[] textFields) {
@@ -21,8 +21,8 @@ public final class NaissanceController {
             parents[0] = null;
             parents[1] = null;
         } else {
-            Personne parent1 = this.provider.getPersonne(idParent1);
-            Personne parent2 = this.provider.getPersonne(idParent2);
+            Personne parent1 = this.mairie.provider.getPersonne(idParent1);
+            Personne parent2 = this.mairie.provider.getPersonne(idParent2);
 
             if (parent1 == null || parent2 == null) {
                 Utilitaire.showError(frame, "L'une des 2 personne n'existe pas");
@@ -60,8 +60,8 @@ public final class NaissanceController {
             Utilitaire.showError(frame, "Format de date invalide. Utilisez JJ/MM/AAAA");
             return false;
         }
-        this.provider.ajouterPersonne(p);
-        JOptionPane.showMessageDialog(frame, "ID: " + this.provider.lastId, "Nouvelle naissance ajoutée", JOptionPane.INFORMATION_MESSAGE);
+        this.mairie.provider.addPersonne(p);
+        JOptionPane.showMessageDialog(frame, "ID: " + this.mairie.provider.lastId, "Nouvelle naissance ajoutée", JOptionPane.INFORMATION_MESSAGE);
         return true;
     }
 }

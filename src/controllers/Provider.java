@@ -19,7 +19,7 @@ public final class Provider {
         this.lastId = new AtomicInteger(0);
     }
 
-    public void ajouterPersonne(Personne p) {
+    public void addPersonne(Personne p) {
         int id = lastId.incrementAndGet();
         p.setId(id);
         personnes.add(p);
@@ -72,7 +72,7 @@ public final class Provider {
                             Sexe.valueOf(parts[3])
                     );
                     p.setEtatCivil(EtatCivil.valueOf(parts[4]));
-                    this.ajouterPersonne(p);
+                    this.addPersonne(p);
                     int conjointId = Integer.parseInt(parts[5]);
                     if (conjointId != -1) {
                         mariagesP1.add(p.getId());

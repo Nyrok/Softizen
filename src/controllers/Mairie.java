@@ -15,12 +15,13 @@ public class Mairie {
     DecesController decesController;
     NaissanceController naissanceController;
 
-    public Mairie(Provider provider) {
-        this.provider = provider;
-        this.mariageController = new MariageController(provider);
-        this.divorceController = new DivorceController(provider);
-        this.decesController = new DecesController(provider);
-        this.naissanceController = new NaissanceController(provider);
+    public Mairie() {
+        this.provider = new Provider();
+        this.provider.load();
+        this.mariageController = new MariageController(this);
+        this.divorceController = new DivorceController(this);
+        this.decesController = new DecesController(this);
+        this.naissanceController = new NaissanceController(this);
         this.interfaceController = null;
     }
 
