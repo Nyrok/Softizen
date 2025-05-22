@@ -16,14 +16,14 @@ public final class DivorceView extends ParentView {
         setLayout(new GridLayout(3, 1));
         JLabel title = Utilitaire.createTitle("Sélectionner la personne à divorcer");
         add(title);
-        JComboBox<String> comboBox = Utilitaire.createComboBox(interfaceController.mairie.provider);
+        JComboBox<String> comboBox = Utilitaire.createComboBox(interfaceController.getMairie().getProvider());
         add(comboBox);
         JPanel buttonsPanel = new JPanel();
         JButton confirmButton = new JButton("Confirmer");
         confirmButton.setForeground(new Color(46, 142, 95));
         confirmButton.addActionListener(actionEvent -> {
             int id = comboBox.getSelectedIndex();
-            if (interfaceController.mairie.getDivorceController().divorce(interfaceController.frame, id))
+            if (interfaceController.getMairie().getDivorceController().divorce(interfaceController.getFrame(), id))
                 interfaceController.menuPrincipal(false);
         });
         buttonsPanel.add(Utilitaire.backButton(interfaceController));

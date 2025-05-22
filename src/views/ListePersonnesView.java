@@ -17,7 +17,7 @@ public final class ListePersonnesView extends ParentView {
     public ListePersonnesView(InterfaceController interfaceController) {
         setLayout(new BorderLayout());
         String[] columnNames = {"ID", "Nom", "Prénom", "Sexe", "Date de naissance", "Etat civil", "Conjoint", "Parent 1", "Parent 2"};
-        Collection<Personne> personnes = interfaceController.mairie.provider.getPersonnes();
+        Collection<Personne> personnes = interfaceController.getMairie().getProvider().getPersonnes();
         Object[][] data = new Object[personnes.size()][9];
 
         int i = 0;

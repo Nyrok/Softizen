@@ -8,12 +8,12 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public class Mairie {
-    public Provider provider;
-    InterfaceController interfaceController;
-    MariageController mariageController;
-    DivorceController divorceController;
-    DecesController decesController;
-    NaissanceController naissanceController;
+    private InterfaceController interfaceController;
+    private final Provider provider;
+    private final MariageController mariageController;
+    private final DivorceController divorceController;
+    private final DecesController decesController;
+    private final NaissanceController naissanceController;
 
     public Mairie() {
         this.provider = new Provider();
@@ -39,6 +39,14 @@ public class Mairie {
 
     public NaissanceController getNaissanceController() {
         return naissanceController;
+    }
+
+    public InterfaceController getInterfaceController() {
+        return interfaceController;
+    }
+
+    public Provider getProvider() {
+        return provider;
     }
 
     public void launchInterface() {

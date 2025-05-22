@@ -7,14 +7,14 @@ import src.utils.Utilitaire;
 import javax.swing.*;
 
 public final class DecesController {
-    Mairie mairie;
+    private final Mairie mairie;
 
     public DecesController(Mairie mairie) {
         this.mairie = mairie;
     }
 
     public boolean deces(JFrame frame, int id) {
-        Personne p = this.mairie.provider.getPersonne(id);
+        Personne p = this.mairie.getProvider().getPersonne(id);
         if (p == null) {
             Utilitaire.showError(frame, "La personne n'existe pas.");
             return false;

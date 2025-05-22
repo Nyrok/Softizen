@@ -20,14 +20,14 @@ public final class EtatPersonneView extends ParentView {
         JLabel title = Utilitaire.createTitle("Sélectionner une personne");
         add(title);
 
-        JComboBox<String> comboBox = Utilitaire.createComboBox(interfaceController.mairie.provider);
+        JComboBox<String> comboBox = Utilitaire.createComboBox(interfaceController.getMairie().getProvider());
         add(comboBox);
 
         JPanel buttonsPanel = new JPanel();
         JButton confirmButton = new JButton("Afficher");
         confirmButton.addActionListener(actionEvent -> {
             int id = comboBox.getSelectedIndex();
-            Personne p = interfaceController.mairie.provider.getPersonne(id);
+            Personne p = interfaceController.getMairie().getProvider().getPersonne(id);
             if (p != null) {
                 String messageText = p.toString();
 
@@ -44,10 +44,10 @@ public final class EtatPersonneView extends ParentView {
                     }
                 }
 
-                JOptionPane.showMessageDialog(interfaceController.frame, messageText,
+                JOptionPane.showMessageDialog(interfaceController.getFrame(), messageText,
                         "État de la personne", JOptionPane.INFORMATION_MESSAGE);
             } else {
-                Utilitaire.showError(interfaceController.frame, "Cette personne n'existe pas");
+                Utilitaire.showError(interfaceController.getFrame(), "Cette personne n'existe pas");
             }
         });
         buttonsPanel.add(Utilitaire.backButton(interfaceController));

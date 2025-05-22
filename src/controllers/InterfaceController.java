@@ -9,9 +9,9 @@ import java.net.URL;
 import java.util.Vector;
 
 public final class InterfaceController {
-    public JFrame frame;
-    public Vector<Class<?>> buttonsActions;
-    public Mairie mairie;
+    private final JFrame frame;
+    private final Vector<Class<?>> buttonsActions;
+    private final Mairie mairie;
 
     public InterfaceController(Mairie mairie) {
         this.mairie = mairie;
@@ -22,6 +22,18 @@ public final class InterfaceController {
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         this.buttonsActions = new Vector<>();
+    }
+
+    public JFrame getFrame() {
+        return frame;
+    }
+
+    public Vector<Class<?>> getButtonsActions() {
+        return buttonsActions;
+    }
+
+    public Mairie getMairie() {
+        return mairie;
     }
 
     public void addButtonAction(Class<?> action) {

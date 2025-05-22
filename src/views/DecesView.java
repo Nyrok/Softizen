@@ -18,7 +18,7 @@ public final class DecesView extends ParentView {
         JLabel title = Utilitaire.createTitle("Selectionner la personne décédée");
         add(title);
 
-        JComboBox<String> comboBox = Utilitaire.createComboBox(interfaceController.mairie.provider);
+        JComboBox<String> comboBox = Utilitaire.createComboBox(interfaceController.getMairie().getProvider());
         add(comboBox);
 
         JPanel buttonsPanel = new JPanel();
@@ -26,7 +26,7 @@ public final class DecesView extends ParentView {
         confirmButton.setForeground(new Color(46, 142, 95));
         confirmButton.addActionListener(actionEvent -> {
             int id = comboBox.getSelectedIndex();
-            if (interfaceController.mairie.getDecesController().deces(interfaceController.frame, id))
+            if (interfaceController.getMairie().getDecesController().deces(interfaceController.getFrame(), id))
                 interfaceController.menuPrincipal(false);
         });
 

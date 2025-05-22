@@ -14,11 +14,11 @@ public final class MainView extends ParentView {
 
     public MainView(InterfaceController interfaceController) {
         this.interfaceController = interfaceController;
-        int buttonsSize = interfaceController.buttonsActions.size();
+        int buttonsSize = interfaceController.getButtonsActions().size();
         JButton[] buttons = new JButton[buttonsSize];
         setLayout(new GridLayout(buttonsSize, 1));
         for (int i = 0; i < buttonsSize; i++) {
-            Class<?> action = interfaceController.buttonsActions.get(i);
+            Class<?> action = interfaceController.getButtonsActions().get(i);
             String text;
             try {
                 Field buttonTextField = action.getDeclaredField("BUTTON_TEXT");
@@ -28,9 +28,9 @@ public final class MainView extends ParentView {
                 return;
             }
             buttons[i] = new JButton(text);
-            buttons[i].setSize(interfaceController.frame.getWidth(), 20);
+            buttons[i].setSize(interfaceController.getFrame().getWidth(), 20);
             buttons[i].setActionCommand(action.getName());
-            this.interfaceController.mairie.setButtonCallback(buttons[i]);
+            this.interfaceController.getMairie().setButtonCallback(buttons[i]);
             if (i == buttonsSize - 1)
                 buttons[i].setForeground(Color.RED);
             add(buttons[i]);

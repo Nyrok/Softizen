@@ -44,7 +44,7 @@ public final  class SaisiePersonneView extends ParentView {
         confirmButton.setForeground(new Color(46, 142, 95));
         confirmButton.addActionListener(actionEvent -> {
             Sexe sexe = (Sexe) Objects.requireNonNull(sexeBox.getSelectedItem());
-            if (interfaceController.mairie.getNaissanceController().naissance(interfaceController.frame, -1, -1, sexe, textFields))
+            if (interfaceController.getMairie().getNaissanceController().naissance(interfaceController.getFrame(), -1, -1, sexe, textFields))
                 interfaceController.menuPrincipal(false);
         });
 

@@ -23,7 +23,7 @@ public final class MariageView extends ParentView {
         for (int i = 0; i < labels.length; i++) {
             labels[i] = new JLabel("Personne " + (i + 1) + " :");
             subPanel.add(labels[i]);
-            comboBoxes[i] = Utilitaire.createComboBox(interfaceController.mairie.provider);
+            comboBoxes[i] = Utilitaire.createComboBox(interfaceController.getMairie().getProvider());
             subPanel.add(comboBoxes[i]);
         }
         add(subPanel);
@@ -33,7 +33,7 @@ public final class MariageView extends ParentView {
         confirmButton.addActionListener(actionEvent -> {
             int idP1 = comboBoxes[0].getSelectedIndex();
             int idP2 = comboBoxes[1].getSelectedIndex();
-            if (interfaceController.mairie.getMariageController().mariage(interfaceController.frame, idP1, idP2))
+            if (interfaceController.getMairie().getMariageController().mariage(interfaceController.getFrame(), idP1, idP2))
                 interfaceController.menuPrincipal(false);
         });
         buttonsPanel.add(Utilitaire.backButton(interfaceController));

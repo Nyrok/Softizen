@@ -8,15 +8,15 @@ import javax.swing.*;
 import java.util.Date;
 
 public final class MariageController {
-    Mairie mairie;
+    private final Mairie mairie;
 
     public MariageController(Mairie mairie) {
         this.mairie = mairie;
     }
 
     public boolean mariage(JFrame frame, int id1, int id2) {
-        Personne p1 = this.mairie.provider.getPersonne(id1);
-        Personne p2 = this.mairie.provider.getPersonne(id2);
+        Personne p1 = this.mairie.getProvider().getPersonne(id1);
+        Personne p2 = this.mairie.getProvider().getPersonne(id2);
 
         if (p1 == null || p2 == null) {
             Utilitaire.showError(frame, "L'une des 2 personnes n'existe pas !");
